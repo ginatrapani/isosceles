@@ -1,7 +1,3 @@
-Starter kit for building data-driven PHP5 web applications, based on ThinkUp's underpinnings.
-
-README.md
-
 # Isosceles, starter kit for PHP5 webapps
 
 Isosceles is an object-oriented, PHP5 web application starter kit based on [ThinkUp](http://thinkupapp.com/)'s
@@ -21,9 +17,9 @@ nowhere near done, but its current feature set includes:
 * [Data Access Object](http://en.wikipedia.org/wiki/Data_access_object)-based data layer using
 [PDO](http://us.php.net/manual/en/book.pdo.php)
 * Dynamic configuration through single config file
-* Caching to disk (via [Smarty](http://smarty.net)
+* Caching to disk (via [Smarty](http://smarty.net))
 * Common webapp tasks like user registration, login, and activity logging
-* Testing framework (using [SimpleTest](http://www.simpletest.org/)
+* Testing framework (using [SimpleTest](http://www.simpletest.org/))
 
 Isosceles is in beta and incomplete. In future releases it will get more common framework features, like routing.
 
