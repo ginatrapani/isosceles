@@ -15,10 +15,6 @@
  * You should have received a copy of the GNU General Public License along with Isosceles.  If not, see
  * <http://www.gnu.org/licenses/>.
  *
- * Controller
- *
- * The parent class of all webapp controllers.
- *
  * @license http://www.gnu.org/licenses/gpl.html
  */
 
@@ -117,5 +113,17 @@ class Utils {
             }
             ini_set('date.timezone',$tz);
         }
+    }
+
+    /**
+     * Generate var dump to string.
+     * @return str
+     */
+    public static function varDumpToString($mixed = null) {
+        ob_start();
+        var_dump($mixed);
+        $content = ob_get_contents();
+        ob_end_clean();
+        return $content;
     }
 }

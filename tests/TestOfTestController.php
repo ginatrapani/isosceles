@@ -58,8 +58,13 @@ class TestOfTestController extends IsoscelesBasicUnitTestCase {
         $this->assertEqual($v_mgr->getTemplateDataItem('test'), 'Testing, testing, 123');
         $this->assertEqual($v_mgr->getTemplateDataItem('app_title'), "My Isosceles Application");
         $this->debug($results);
-        $this->assertEqual($results, '<a href="'.$config->getValue('site_root_path').
-        '">My Isosceles Application</a>: Testing, testing, 123 | Not logged in');
+        $this->assertEqual($results, '<html>
+<head>
+<title>My Isosceles Application</title>
+</head>
+<body>
+
+<a href="'.$config->getValue('site_root_path').'">My Isosceles Application</a>: Testing, testing, 123 | Not logged in');
     }
 
     /**
@@ -141,6 +146,7 @@ class TestOfTestController extends IsoscelesBasicUnitTestCase {
         $controller = new TestController(true);
         $_GET['css'] = true;
         $results = $controller->go();
+        $this->debug($results);
         $this->assertEqual(count($controller->getHeaderCSS()), 1);
         $css = $controller->getHeaderCSS();
         $this->assertEqual($css[0], 'assets/css/bla.css');

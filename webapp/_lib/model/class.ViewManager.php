@@ -15,10 +15,6 @@
  * You should have received a copy of the GNU General Public License along with Isosceles.  If not, see
  * <http://www.gnu.org/licenses/>.
  *
- * Controller
- *
- * The parent class of all webapp controllers.
- *
  * @license http://www.gnu.org/licenses/gpl.html
  */
 
@@ -96,7 +92,7 @@ class ViewManager extends Smarty {
         $this->template_dir = array( WEBAPP_PATH.'_lib/view', $src_root_path.'tests/view');
         $this->compile_dir = FileDataManager::getDataPath('compiled_view');
         $this->plugins_dir = array('plugins', WEBAPP_PATH.'_lib/view/plugins/');
-        $this->cache_dir = $this->compile_dir . '/cache';
+        $this->cache_dir = $this->compile_dir . 'cache';
         $this->caching = ($cache_pages)?1:0;
         $this->cache_lifetime = $cache_lifetime;
         $this->debug = $debug;

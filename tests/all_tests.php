@@ -15,10 +15,6 @@
  * You should have received a copy of the GNU General Public License along with Isosceles.  If not, see
  * <http://www.gnu.org/licenses/>.
  *
- * Controller
- *
- * The parent class of all webapp controllers.
- *
  * @license http://www.gnu.org/licenses/gpl.html
  */
 
@@ -55,6 +51,10 @@ $test_suite = new TestSuite('Isosceles tests');
 $test_suite->add(new TestOfFileDataManager());
 $test_suite->add(new TestOfProfiler());
 $test_suite->add(new TestOfTestController());
+$test_suite->add(new TestOfViewManager());
+$test_suite->add(new TestOfUtils());
+$test_suite->add(new TestOfLoader());
+$test_suite->add(new TestOfConfig());
 
 $tr = new TextReporter();
 list($usec, $sec) = explode(" ", microtime());
