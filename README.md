@@ -1,10 +1,10 @@
-# Isosceles, starter kit for PHP5 webapps
+# Isosceles: Starter kit for PHP5 webapps
 
 Isosceles is an object-oriented, PHP5 web application starter kit based on [ThinkUp](http://thinkupapp.com/)'s
 underpinnings. Isosceles provides a simple MVC framework, database agnosticism, caching, dynamic class loading,
 single-file configuration, and common actions like user registration, login, and logging.
 
-Isosceles' name inspired by the architecture of New York City's 
+Isosceles' name was inspired by the architecture of New York City's 
 [One World Trade Center](http://en.wikipedia.org/wiki/One_World_Trade_Center).
 
 ## Features
@@ -18,7 +18,8 @@ nowhere near done, but its current feature set includes:
 [PDO](http://us.php.net/manual/en/book.pdo.php)
 * Dynamic configuration through single config file
 * Caching to disk (via [Smarty](http://smarty.net))
-* Common webapp tasks like user registration, login, and activity logging
+* Common webapp tasks like user registration and login, application settings, and activity logging
+* A simple database query profiler
 * Testing framework (using [SimpleTest](http://www.simpletest.org/))
 
 Isosceles is in beta and incomplete. In future releases it will get more common framework features, like routing.

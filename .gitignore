@@ -1,3 +1,7 @@
 .buildpath
 .project
 .settings/
+.DS_Store
+webapp/config.inc.php
+tests/config.tests.inc.php
+webapp/data/*
