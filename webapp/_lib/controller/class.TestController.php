@@ -27,7 +27,7 @@ class TestController extends Controller {
     public function control() {
         if (isset($_GET['json'])) {
             $this->setJsonData( array( 'aname' => 'a value', 'alist' => array('apple', 'pear', 'banana'), 'alink' =>
-            'http://isosceleskit.com'));
+            'http://isosceleskit.org'));
         } else if (isset($_GET['text'])) {
             $this->setContentType('text/plain');
         } else if (isset($_GET['png'])) {

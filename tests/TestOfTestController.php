@@ -85,6 +85,7 @@ class TestOfTestController extends IsoscelesBasicUnitTestCase {
         $_GET['json'] = true;
         $results = $controller->go();
         unset($_GET['json']);
+        $this->debug($results);
         $obj = json_decode($results);
         $this->assertIsA($obj, 'stdClass');
         $this->assertEqual($obj->aname, 'a value');
