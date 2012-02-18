@@ -22,16 +22,16 @@
  * @license http://www.gnu.org/licenses/gpl.html
  */
 
-require_once WEBAPP_PATH.'_lib/model/class.Loader.php';
+require_once ISOSCELES_PATH.'libs/model/class.Loader.php';
 
 class IsoscelesBasicUnitTestCase extends UnitTestCase {
 
     public function setUp() {
         parent::setUp();
         Loader::register(array(
-        ROOT_PATH . 'tests/',
-        ROOT_PATH . 'tests/classes/',
-        ROOT_PATH . 'tests/fixtures/',
+        ISOSCELES_PATH . 'tests/',
+        ISOSCELES_PATH . 'tests/classes/',
+        ISOSCELES_PATH . 'tests/fixtures/',
         ));
 
         $config = Config::getInstance();
@@ -39,7 +39,6 @@ class IsoscelesBasicUnitTestCase extends UnitTestCase {
             date_default_timezone_set($config->getValue('timezone'));
         }
         $this->DEBUG = (getenv('TEST_DEBUG')!==false) ? true : false;
-
         self::isTestEnvironmentReady();
     }
 
@@ -72,8 +71,8 @@ class IsoscelesBasicUnitTestCase extends UnitTestCase {
      * Move webapp/config.inc.php to webapp/config.inc.bak.php for tests with no config file
      */
     protected function removeConfigFile() {
-        if (file_exists(WEBAPP_PATH . 'config.inc.php')) {
-            $cmd = 'mv '.WEBAPP_PATH . 'config.inc.php ' .WEBAPP_PATH . 'config.inc.bak.php';
+        if (file_exists(ISOSCELES_PATH . 'libs/config.inc.php')) {
+            $cmd = 'mv '.ISOSCELES_PATH . 'libs/config.inc.php ' .ISOSCELES_PATH . 'libs/config.inc.bak.php';
             exec($cmd, $output, $return_val);
             if ($return_val != 0) {
                 echo "Could not ".$cmd;
@@ -85,8 +84,8 @@ class IsoscelesBasicUnitTestCase extends UnitTestCase {
      * Move webapp/config.inc.bak.php to webapp/config.inc.php
      */
     protected function restoreConfigFile() {
-        if (file_exists(WEBAPP_PATH . 'config.inc.bak.php')) {
-            $cmd = 'mv '.WEBAPP_PATH . 'config.inc.bak.php ' .WEBAPP_PATH . 'config.inc.php';
+        if (file_exists(ISOSCELES_PATH . 'libs/config.inc.bak.php')) {
+            $cmd = 'mv '.ISOSCELES_PATH . 'libs/config.inc.bak.php ' .ISOSCELES_PATH . 'libs/config.inc.php';
             exec($cmd, $output, $return_val);
             if ($return_val != 0) {
                 echo "Could not ".$cmd;
@@ -110,7 +109,7 @@ class IsoscelesBasicUnitTestCase extends UnitTestCase {
      * Prevents unnecessary/inexplicable failures and data loss.
      */
     public static function isTestEnvironmentReady() {
-        require WEBAPP_PATH.'config.inc.php';
+        require ISOSCELES_PATH.'libs/config.inc.php';
 
         $datadir_path = FileDataManager::getDataPath();
         if (!is_writable($datadir_path)) {
@@ -120,7 +119,7 @@ class IsoscelesBasicUnitTestCase extends UnitTestCase {
         global $TEST_DATABASE;
 
         if ($ISOSCELES_CFG['db_name'] != $TEST_DATABASE) {
-            $message = "The database name in webapp/config.inc.php does not match \$TEST_DATABASE in ".
+            $message = "The database name in libs/config.inc.php does not match \$TEST_DATABASE in ".
             "tests/config.tests.inc.php.
 In order to test your Isosceles installation without losing data, these database names must both point to the same ".
 "empty test database.";

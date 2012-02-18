@@ -39,8 +39,8 @@ class Config {
             $this->config = $vals;
         } else {
             Loader::definePathConstants();
-            if (file_exists(WEBAPP_PATH . 'config.inc.php')) {
-                require WEBAPP_PATH . 'config.inc.php';
+            if (file_exists(ISOSCELES_PATH . 'libs/config.inc.php')) {
+                require ISOSCELES_PATH . 'libs/config.inc.php';
                 $this->config = $ISOSCELES_CFG;
             } else {
                 throw new ConfigurationException('Isosceles\' configuration file does not exist!');

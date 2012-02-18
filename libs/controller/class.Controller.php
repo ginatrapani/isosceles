@@ -94,7 +94,7 @@ abstract class Controller {
             Loader::definePathConstants();
             $cfg_array =  array(
             'site_root_path'=>BASE_URL,
-            'source_root_path'=>ROOT_PATH,
+            'source_root_path'=>ISOSCELES_PATH,
             'debug'=>false,
             'cache_pages'=>false);
             $this->view_mgr = new ViewManager($cfg_array);

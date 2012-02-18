@@ -20,8 +20,8 @@
 
 
 require_once dirname(__FILE__).'/init.tests.php';
-require_once WEBAPP_PATH.'_lib/extlib/simpletest/autorun.php';
-require_once WEBAPP_PATH.'config.inc.php';
+require_once ISOSCELES_PATH.'libs/extlib/simpletest/autorun.php';
+require_once ISOSCELES_PATH.'libs/config.inc.php';
 
 class TestOfConfig extends IsoscelesBasicUnitTestCase {
 
@@ -45,8 +45,8 @@ class TestOfConfig extends IsoscelesBasicUnitTestCase {
     }
 
     public function testGetValuesArray() {
-        require WEBAPP_PATH.'config.inc.php';
-        //        require WEBAPP_PATH.'install/version.php';
+        require ISOSCELES_PATH.'libs/config.inc.php';
+        //        require ISOSCELES_PATH.'install/version.php';
         $config = Config::getInstance();
         //tests assume profiler and caching is off
         $ISOSCELES_CFG['cache_pages']=false;

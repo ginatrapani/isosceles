@@ -57,25 +57,21 @@ class Loader {
      * @param array $additional_paths Array of strings, additional lookup path for classes
      */
     private static function setLookupPath($additional_paths = null ) {
-        // check two required named constants
-        if ( !defined('ROOT_PATH') ) {
-            define('ROOT_PATH', str_replace("\\",'/', dirname(dirname(dirname(dirname(__FILE__))))) .'/');
-        }
-
-        if ( !defined('WEBAPP_PATH') ) {
-            define('WEBAPP_PATH', str_replace("\\",'/', dirname(dirname(dirname(__FILE__)))) .'/');
+        // check required named constants
+        if ( !defined('ISOSCELES_PATH') ) {
+            define('ISOSCELES_PATH', str_replace("\\",'/', dirname(dirname(dirname(__FILE__)))) .'/');
         }
 
         // set default lookup path for classes
         self::$lookup_path = array(
-        WEBAPP_PATH . '_lib/model/',
-        WEBAPP_PATH . '_lib/controller/',
-        WEBAPP_PATH . '_lib/model/exceptions/'
+        ISOSCELES_PATH . 'libs/model/',
+        ISOSCELES_PATH . 'libs/controller/',
+        ISOSCELES_PATH . 'libs/model/exceptions/'
         );
 
         // set default lookup path for special classes
         self::$special_classes = array(
-        'Smarty' => WEBAPP_PATH . '_lib/extlib/Smarty-3.1.7/libs/Smarty.class.php'
+        'Smarty' => ISOSCELES_PATH . 'libs/extlib/Smarty-3.1.7/libs/Smarty.class.php'
         );
 
         if ( isset($additional_paths) && is_array($additional_paths)  ) {
@@ -86,18 +82,11 @@ class Loader {
     }
 
     /**
-     * Define application path constants ROOT_PATH and WEBAPP_PATH
+     * Define application path constant ISOSCELES_PATH
      */
     public static function definePathConstants() {
-        if ( !defined('ROOT_PATH') ) {
-            define('ROOT_PATH', str_replace("\\",'/', dirname(dirname(__FILE__))) .'/');
-        }
-        if (!defined('WEBAPP_PATH') ) {
-            if (file_exists(str_replace("\\",'/', dirname(dirname(__FILE__))) .'/' . 'webapp')) { // source repo
-                define('WEBAPP_PATH', ROOT_PATH . 'webapp/');
-            } else { // distro package
-                define('WEBAPP_PATH', ROOT_PATH);
-            }
+        if (!defined('ISOSCELES_PATH') ) {
+            define('ISOSCELES_PATH', str_replace("\\",'/', dirname(dirname(__FILE__))) .'/');
         }
     }
 

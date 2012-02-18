@@ -40,8 +40,8 @@ class IsoscelesUnitTestCase extends IsoscelesBasicUnitTestCase {
      */
     public function setUp() {
         parent::setUp();
-        require THINKUP_WEBAPP_PATH.'config.inc.php';
-        require THINKUP_ROOT_PATH .'tests/config.tests.inc.php';
+        require ISOSCELES_PATH.'config.inc.php';
+        require ISOSCELES_PATH .'tests/config.tests.inc.php';
         $this->test_database_name = $TEST_DATABASE;
 
         $config = Config::getInstance();

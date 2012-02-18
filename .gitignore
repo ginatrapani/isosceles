@@ -2,6 +2,6 @@
 .project
 .settings/
 .DS_Store
-webapp/config.inc.php
+config.inc.php
 tests/config.tests.inc.php
 data/*

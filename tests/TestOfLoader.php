@@ -19,8 +19,8 @@
  */
 
 require_once dirname(__FILE__).'/init.tests.php';
-require_once WEBAPP_PATH.'_lib/extlib/simpletest/autorun.php';
-require_once WEBAPP_PATH.'config.inc.php';
+require_once ISOSCELES_PATH.'libs/extlib/simpletest/autorun.php';
+require_once ISOSCELES_PATH.'libs/config.inc.php';
 
 class TestOfLoader extends IsoscelesBasicUnitTestCase {
 
@@ -40,37 +40,37 @@ class TestOfLoader extends IsoscelesBasicUnitTestCase {
 
         // check default lookup path without additionalPath
         $this->assertEqual( Loader::getLookupPath(), array(
-        WEBAPP_PATH . '_lib/model/',
-        WEBAPP_PATH . '_lib/controller/',
-        WEBAPP_PATH . '_lib/model/exceptions/'
+        ISOSCELES_PATH . 'libs/model/',
+        ISOSCELES_PATH . 'libs/controller/',
+        ISOSCELES_PATH . 'libs/model/exceptions/'
         ));
 
         // check special classes
         $this->assertEqual( Loader::getSpecialClasses(),
-        array('Smarty'=>WEBAPP_PATH . '_lib/extlib/Smarty-3.1.7/libs/Smarty.class.php'));
+        array('Smarty'=>ISOSCELES_PATH . 'libs/extlib/Smarty-3.1.7/libs/Smarty.class.php'));
     }
 
     public function testLoaderRegisterWithStringAdditionalPath() {
         // Loader with string of path as additional path
-        $loader = Loader::register(array(ROOT_PATH . 'tests/classes'));
+        $loader = Loader::register(array(ISOSCELES_PATH . 'tests/classes'));
 
         // check if Loader is registered to spl autoload
         $this->assertTrue($loader, 'Loader is registered to spl autoload');
 
         // check lookup path with single additionalPath
         $this->assertEqual( Loader::getLookupPath(), array(
-        WEBAPP_PATH . '_lib/model/',
-        WEBAPP_PATH . '_lib/controller/',
-        WEBAPP_PATH . '_lib/model/exceptions/',
-        ROOT_PATH . 'tests/classes'
+        ISOSCELES_PATH . 'libs/model/',
+        ISOSCELES_PATH . 'libs/controller/',
+        ISOSCELES_PATH . 'libs/model/exceptions/',
+        ISOSCELES_PATH . 'tests/classes'
         ));
     }
 
     public function testLoaderRegisterWithArrayAdditionalPaths() {
         // Loader with array of path as additional path
         $loader = Loader::register(array(
-        ROOT_PATH . 'tests',
-        ROOT_PATH . 'tests/classes'
+        ISOSCELES_PATH . 'tests',
+        ISOSCELES_PATH . 'tests/classes'
         ));
 
         // check if Loader is registered to spl autoload
@@ -78,11 +78,11 @@ class TestOfLoader extends IsoscelesBasicUnitTestCase {
 
         // check lookup path with array additionalPath
         $this->assertEqual( Loader::getLookupPath(), array(
-        WEBAPP_PATH . '_lib/model/',
-        WEBAPP_PATH . '_lib/controller/',
-        WEBAPP_PATH . '_lib/model/exceptions/',
-        ROOT_PATH . 'tests',
-        ROOT_PATH . 'tests/classes'
+        ISOSCELES_PATH . 'libs/model/',
+        ISOSCELES_PATH . 'libs/controller/',
+        ISOSCELES_PATH . 'libs/model/exceptions/',
+        ISOSCELES_PATH . 'tests',
+        ISOSCELES_PATH . 'tests/classes'
         ));
     }
 
@@ -113,24 +113,24 @@ class TestOfLoader extends IsoscelesBasicUnitTestCase {
     public function testAdditionalPathAfterInitialRegister() {
         Loader::register();
         $this->assertEqual( Loader::getLookupPath(), array(
-        WEBAPP_PATH . '_lib/model/',
-        WEBAPP_PATH . '_lib/controller/',
-        WEBAPP_PATH . '_lib/model/exceptions/',
+        ISOSCELES_PATH . 'libs/model/',
+        ISOSCELES_PATH . 'libs/controller/',
+        ISOSCELES_PATH . 'libs/model/exceptions/',
         ));
 
-        Loader::addPath(ROOT_PATH . 'tests/classes');
+        Loader::addPath(ISOSCELES_PATH . 'tests/classes');
         $this->assertEqual( Loader::getLookupPath(), array(
-        WEBAPP_PATH . '_lib/model/',
-        WEBAPP_PATH . '_lib/controller/',
-        WEBAPP_PATH . '_lib/model/exceptions/',
-        ROOT_PATH . 'tests/classes'
+        ISOSCELES_PATH . 'libs/model/',
+        ISOSCELES_PATH . 'libs/controller/',
+        ISOSCELES_PATH . 'libs/model/exceptions/',
+        ISOSCELES_PATH . 'tests/classes'
         ));
     }
 
     public function assertClassInstantiates($class) {
         try {
             new $class;
-            if ( !file_exists(WEBAPP_PATH . 'config.inc.php') ) {
+            if ( !file_exists(ISOSCELES_PATH . 'libs/config.inc.php') ) {
                 $this->fail('Missing Configuration File');
             } else {
                 $this->pass('Configuration File Exists');
@@ -147,13 +147,9 @@ class TestOfLoader extends IsoscelesBasicUnitTestCase {
     public function testDefinePathConstants() {
         Loader::definePathConstants();
 
-        $this->assertTrue( defined('ROOT_PATH') );
-        $this->assertTrue( is_readable(ROOT_PATH) );
-        $this->debug(ROOT_PATH);
-
-        $this->assertTrue( defined('WEBAPP_PATH') );
-        $this->assertTrue( is_readable(WEBAPP_PATH) );
-        $this->debug(WEBAPP_PATH);
+        $this->assertTrue( defined('ISOSCELES_PATH') );
+        $this->assertTrue( is_readable(ISOSCELES_PATH) );
+        $this->debug(ISOSCELES_PATH);
     }
 
 }

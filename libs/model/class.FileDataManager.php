@@ -30,10 +30,10 @@ class FileDataManager {
         try {
             $path = Config::getInstance()->getValue('datadir_path');
         } catch (ConfigurationException $e) {
-            $path = WEBAPP_PATH.'data/';
+            $path = ISOSCELES_PATH.'data/';
         }
         if ($path=='') { //config file exists but datadir_path is not set
-            $path = WEBAPP_PATH.'data/';
+            $path = ISOSCELES_PATH.'data/';
         }
         $path = preg_replace('/\/*$/', '', $path);
         if ($file) {

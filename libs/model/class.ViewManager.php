@@ -89,9 +89,9 @@ class ViewManager extends Smarty {
         Loader::definePathConstants();
 
         parent::__construct();
-        $this->template_dir = array( WEBAPP_PATH.'_lib/view', $src_root_path.'tests/view');
+        $this->template_dir = array( ISOSCELES_PATH.'libs/view', $src_root_path.'tests/view');
         $this->compile_dir = FileDataManager::getDataPath('compiled_view');
-        $this->plugins_dir = array('plugins', WEBAPP_PATH.'_lib/view/plugins/');
+        $this->plugins_dir = array('plugins', ISOSCELES_PATH.'libs/view/plugins/');
         $this->cache_dir = $this->compile_dir . 'cache';
         $this->caching = ($cache_pages)?1:0;
         $this->cache_lifetime = $cache_lifetime;
@@ -252,7 +252,7 @@ class ViewManager extends Smarty {
             }
             return str_replace(array('#BASE_URL#', '#WHOAMI#', '#COMPILE_DIR#'),
             array('', $whoami, FileDataManager::getDataPath()),
-            file_get_contents(WEBAPP_PATH.'_lib/view/500-perm.html'));
+            file_get_contents(ISOSCELES_PATH.'libs/view/500-perm.html'));
         }
     }
 

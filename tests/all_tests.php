@@ -19,9 +19,9 @@
  */
 
 include dirname(__FILE__) . '/init.tests.php';
-require_once WEBAPP_PATH.'_lib/extlib/simpletest/autorun.php';
-require_once WEBAPP_PATH.'_lib/extlib/simpletest/web_tester.php';
-require_once WEBAPP_PATH.'_lib/extlib/simpletest/mock_objects.php';
+require_once ISOSCELES_PATH.'libs/extlib/simpletest/autorun.php';
+require_once ISOSCELES_PATH.'libs/extlib/simpletest/web_tester.php';
+require_once ISOSCELES_PATH.'libs/extlib/simpletest/mock_objects.php';
 
 if (isset($argv[1]) && ($argv[1] == '--usage' || $argv[1] == '-h' || $argv[1] == '-help')) {
     echo "Isosceles test suite runner
@@ -47,7 +47,6 @@ $TOTAL_FAILURES = 0;
 $start_time = microtime(true);
 
 $test_suite = new TestSuite('Isosceles tests');
-//$test_suite->add(new TestOfConfig());
 $test_suite->add(new TestOfFileDataManager());
 $test_suite->add(new TestOfProfiler());
 $test_suite->add(new TestOfTestController());
@@ -82,7 +81,7 @@ $tests->run( $tr );
 //
 //";
 
-//echo trim(exec("cd ".ROOT_PATH."docs/source/; wc -w `find ./ -type f -name \*.rst` | tail -n 1")) .
+//echo trim(exec("cd ".ISOSCELES_PATH."docs/source/; wc -w `find ./ -type f -name \*.rst` | tail -n 1")) .
 //" words of application documentation
 //
 //";

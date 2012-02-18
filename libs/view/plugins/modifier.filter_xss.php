@@ -1,7 +1,7 @@
 <?php
 /**
  *
- * ThinkUp/webapp/_lib/view/plugins/modifier.filter_xss.php
+ * ThinkUp/webapp/libs/view/plugins/modifier.filter_xss.php
  *
  * Copyright (c) 2011-2012 Mark Wilkie
  *

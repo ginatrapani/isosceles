@@ -19,8 +19,8 @@
  */
 
 require_once dirname(__FILE__).'/init.tests.php';
-require_once WEBAPP_PATH.'_lib/extlib/simpletest/autorun.php';
-require_once WEBAPP_PATH.'config.inc.php';
+require_once ISOSCELES_PATH.'libs/extlib/simpletest/autorun.php';
+require_once ISOSCELES_PATH.'libs/config.inc.php';
 
 class TestOfUtils extends IsoscelesBasicUnitTestCase {
 

@@ -19,8 +19,8 @@
  */
 
 require_once dirname(__FILE__).'/init.tests.php';
-require_once WEBAPP_PATH.'_lib/extlib/simpletest/autorun.php';
-require_once WEBAPP_PATH.'config.inc.php';
+require_once ISOSCELES_PATH.'libs/extlib/simpletest/autorun.php';
+require_once ISOSCELES_PATH.'libs/config.inc.php';
 
 class TestOfFileDataManager extends IsoscelesBasicUnitTestCase {
 
@@ -30,11 +30,11 @@ class TestOfFileDataManager extends IsoscelesBasicUnitTestCase {
 
         //test just path
         $path = FileDataManager::getDataPath();
-        $this->assertEqual($path, WEBAPP_PATH.'data/');
+        $this->assertEqual($path, ISOSCELES_PATH.'data/');
 
         //test path with file
         $path = FileDataManager::getDataPath('myfile.txt');
-        $this->assertEqual($path, WEBAPP_PATH.'data/myfile.txt');
+        $this->assertEqual($path, ISOSCELES_PATH.'data/myfile.txt');
         $this->restoreConfigFile();
     }
 
@@ -46,16 +46,16 @@ class TestOfFileDataManager extends IsoscelesBasicUnitTestCase {
 
         //test just path
         $path = FileDataManager::getDataPath();
-        $this->assertEqual($path, WEBAPP_PATH.'data/');
+        $this->assertEqual($path, ISOSCELES_PATH.'data/');
 
         //test path with file
         $path = FileDataManager::getDataPath('myfile.txt');
-        $this->assertEqual($path, WEBAPP_PATH.'data/myfile.txt');
+        $this->assertEqual($path, ISOSCELES_PATH.'data/myfile.txt');
         $this->restoreConfigFile();
     }
 
     public function testGetDataPathConfigExistsWithDataDirValue() {
-        require WEBAPP_PATH.'config.inc.php';
+        require ISOSCELES_PATH.'libs/config.inc.php';
 
         //if test fails here, the config file doesn't have datadir_path set
         $this->assertNotNull($ISOSCELES_CFG['datadir_path']);
@@ -70,7 +70,7 @@ class TestOfFileDataManager extends IsoscelesBasicUnitTestCase {
     }
 
     public function testGetBackupPath() {
-        require WEBAPP_PATH.'config.inc.php';
+        require ISOSCELES_PATH.'libs/config.inc.php';
 
         //if test fails here, the config file doesn't have datadir_path set
         $this->assertNotNull($ISOSCELES_CFG['datadir_path']);
