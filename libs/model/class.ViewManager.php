@@ -89,9 +89,17 @@ class ViewManager extends Smarty {
         Loader::definePathConstants();
 
         parent::__construct();
-        $this->template_dir = array( ISOSCELES_PATH.'libs/view', $src_root_path.'tests/view');
+        $template_dirs = array( ISOSCELES_PATH.'libs/view', $src_root_path.'tests/view');
+        if (isset($config_array['templates_path'])) {
+            array_push($template_dirs, $config_array['templates_path']);
+        }
+        $this->template_dir = $template_dirs;
         $this->compile_dir = FileDataManager::getDataPath('compiled_view');
-        $this->plugins_dir = array('plugins', ISOSCELES_PATH.'libs/view/plugins/');
+        $plugin_dirs = array();
+        foreach ($template_dirs as $dir) {
+            array_push($plugin_dirs, $dir.'/plugins');
+        }
+        $this->plugins_dir = $plugin_dirs;
         $this->cache_dir = $this->compile_dir . 'cache';
         $this->caching = ($cache_pages)?1:0;
         $this->cache_lifetime = $cache_lifetime;

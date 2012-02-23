@@ -16,6 +16,9 @@ $ISOSCELES_CFG['source_root_path']          = dirname( __FILE__ ) . '/';
 // Server path to writable data directory, $ISOSCELES_CFG['source_root_path'] . 'data/' by default
 $ISOSCELES_CFG['datadir_path']              = $ISOSCELES_CFG['source_root_path'] . 'data/';
 
+// Application template path
+$ISOSCELES_CFG['templates_path']            = null;
+
 // Your timezone
 $ISOSCELES_CFG['timezone']                  = 'UTC';
 
