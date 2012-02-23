@@ -40,25 +40,28 @@ class IsoscelesUnitTestCase extends IsoscelesBasicUnitTestCase {
      */
     public function setUp() {
         parent::setUp();
-        require ISOSCELES_PATH.'config.inc.php';
+
+        require ISOSCELES_PATH.'libs/config.inc.php';
         require ISOSCELES_PATH .'tests/config.tests.inc.php';
         $this->test_database_name = $TEST_DATABASE;
-
         $config = Config::getInstance();
 
         if (! self::ramDiskTestMode() ) {
             //Override default CFG values
-            $THINKUP_CFG['db_name'] = $this->test_database_name;
+            $ISOSCELES_CFG['db_name'] = $this->test_database_name;
             $config->setValue('db_name', $this->test_database_name);
         } else {
-            $this->test_database_name = $THINKUP_CFG['db_name'];
+            $this->test_database_name = $ISOSCELES_CFG['db_name'];
         }
-
         $this->testdb_helper = new IsoscelesTestDatabaseHelper();
+
+
         $this->testdb_helper->drop($this->test_database_name);
+
         $this->table_prefix = $config->getValue('table_prefix');
-        $this->testdb_helper->prefix = $this->table_prefix;
-        $this->testdb_helper->create($THINKUP_CFG['source_root_path']."/webapp/install/sql/build-db_mysql.sql");
+        PDODAO::$prefix = $this->table_prefix;
+
+        $this->testdb_helper->create($ISOSCELES_CFG['source_root_path']."install/sql/build-db_mysql.sql");
     }
 
     /**

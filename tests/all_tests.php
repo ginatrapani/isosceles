@@ -19,9 +19,9 @@
  */
 
 include dirname(__FILE__) . '/init.tests.php';
-require_once ISOSCELES_PATH.'libs/extlib/simpletest/autorun.php';
-require_once ISOSCELES_PATH.'libs/extlib/simpletest/web_tester.php';
-require_once ISOSCELES_PATH.'libs/extlib/simpletest/mock_objects.php';
+require_once ISOSCELES_PATH.'extlibs/simpletest/autorun.php';
+require_once ISOSCELES_PATH.'extlibs/simpletest/web_tester.php';
+require_once ISOSCELES_PATH.'extlibs/simpletest/mock_objects.php';
 
 if (isset($argv[1]) && ($argv[1] == '--usage' || $argv[1] == '-h' || $argv[1] == '-help')) {
     echo "Isosceles test suite runner
@@ -47,13 +47,15 @@ $TOTAL_FAILURES = 0;
 $start_time = microtime(true);
 
 $test_suite = new TestSuite('Isosceles tests');
+$test_suite->add(new TestOfConfig());
+$test_suite->add(new TestOfDAOFactory());
 $test_suite->add(new TestOfFileDataManager());
+$test_suite->add(new TestOfLoader());
+$test_suite->add(new TestOfPDODAO());
 $test_suite->add(new TestOfProfiler());
 $test_suite->add(new TestOfTestController());
-$test_suite->add(new TestOfViewManager());
 $test_suite->add(new TestOfUtils());
-$test_suite->add(new TestOfLoader());
-$test_suite->add(new TestOfConfig());
+$test_suite->add(new TestOfViewManager());
 
 $tr = new TextReporter();
 list($usec, $sec) = explode(" ", microtime());

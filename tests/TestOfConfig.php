@@ -20,7 +20,7 @@
 
 
 require_once dirname(__FILE__).'/init.tests.php';
-require_once ISOSCELES_PATH.'libs/extlib/simpletest/autorun.php';
+require_once ISOSCELES_PATH.'extlibs/simpletest/autorun.php';
 require_once ISOSCELES_PATH.'libs/config.inc.php';
 
 class TestOfConfig extends IsoscelesBasicUnitTestCase {
