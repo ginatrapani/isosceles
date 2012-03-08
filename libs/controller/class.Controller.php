@@ -412,7 +412,7 @@ abstract class Controller {
      */
     protected function shouldRefreshCache() {
         if ($this->view_mgr->isViewCached()) {
-            return !$this->view_mgr->is_cached($this->view_template, $this->getCacheKeyString());
+            return !$this->view_mgr->isCached($this->view_template, $this->getCacheKeyString());
         } else {
             return true;
         }
