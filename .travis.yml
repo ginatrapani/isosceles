@@ -1,0 +1,15 @@
+language: php
+php:
+  - 5.3
+  - 5.2
+  - 5.2.17
+
+before_script:
+ - mysql -e 'create database isosceles'
+ - mysql isosceles < ./install/sql/build-db_mysql.sql
+ - cp libs/config.sample.inc.php libs/config.inc.php
+ - cp tests/config.sample.inc.php tests/config.tests.inc.php
+ - mkdir libs/data
+ - chmod -R 777 libs/data
+
+script: php tests/all_tests.php

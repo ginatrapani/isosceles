@@ -38,9 +38,9 @@ $ISOSCELES_CFG['rss_crawler_refresh_rate']  = 20;
 
 $ISOSCELES_CFG['db_host']                   = 'localhost'; //On a shared host? Try mysql.yourdomain.com, or see your web host's documentation.
 $ISOSCELES_CFG['db_type']                   = 'mysql';
-$ISOSCELES_CFG['db_user']                   = 'your_database_username';
-$ISOSCELES_CFG['db_password']               = 'your_database_password';
-$ISOSCELES_CFG['db_name']                   = 'your_isosceles_database_name';
+$ISOSCELES_CFG['db_user']                   = 'root';
+$ISOSCELES_CFG['db_password']               = '';
+$ISOSCELES_CFG['db_name']                   = 'isosceles';
 $ISOSCELES_CFG['db_socket']                 = '';
 $ISOSCELES_CFG['db_port']                   = '';
 $ISOSCELES_CFG['table_prefix']              = 'iso_';
@@ -79,10 +79,10 @@ $ISOSCELES_CFG['set_pdo_charset']           = false;
 if ((isset($_SESSION["MODE"]) && $_SESSION["MODE"] == "TESTS") && ! isset($_SESSION["RD_MODE"])
 || (getenv("MODE")=="TESTS" && ! getenv("RD_MODE")=="1")) {
     // Full server path to /isosceles/ source code folder.
-    $ISOSCELES_CFG['source_root_path']          = '/your-server-path-to/isosceles/';
-    $ISOSCELES_CFG['db_user']                   = 'your_test_database_username';
-    $ISOSCELES_CFG['db_password']               = 'your_test_database_password';
-    $ISOSCELES_CFG['db_name']                   = 'your_test_database_name'; //by default, isosceles_tests
+    //$ISOSCELES_CFG['source_root_path']          = '/your-server-path-to/isosceles/';
+    //$ISOSCELES_CFG['db_user']                   = 'your_test_database_username';
+    //$ISOSCELES_CFG['db_password']               = 'your_test_database_password';
+    //$ISOSCELES_CFG['db_name']                   = 'your_test_database_name'; //by default, isosceles_tests
     ini_set('error_reporting', E_STRICT);
 }
 

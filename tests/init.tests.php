@@ -10,6 +10,7 @@ if ( !defined('ISOSCELES_PATH') ) {
 if ( !defined('TESTS_RUNNING') ) {
     define('TESTS_RUNNING', true);
 }
+
 //Register our lazy class loader
 require_once ISOSCELES_PATH.'libs/model/class.Loader.php';
 

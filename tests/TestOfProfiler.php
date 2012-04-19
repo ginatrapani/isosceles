@@ -47,6 +47,7 @@ class TestOfProfiler extends IsoscelesBasicUnitTestCase {
 
     public function testAdd() {
         $profiler = Profiler::getInstance();
+        $profiler->clearLog();
         $profiler->add(0.02503434, 'My 1st action');
         $profiler->add(0.02303434, 'My 2nd action');
         $profiler->add(0.12003434, 'My 3rd action');

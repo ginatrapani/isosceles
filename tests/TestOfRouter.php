@@ -6,6 +6,7 @@ require_once ISOSCELES_PATH.'libs/config.inc.php';
 class TestOfRouter extends IsoscelesBasicUnitTestCase {
 
     public function setUp(){
+        Router::$routes = array();
         parent::setUp();
     }
 

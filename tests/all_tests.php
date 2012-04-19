@@ -19,8 +19,6 @@
  */
 
 include dirname(__FILE__) . '/init.tests.php';
-require_once ISOSCELES_PATH.'extlibs/simpletest/autorun.php';
-require_once ISOSCELES_PATH.'extlibs/simpletest/web_tester.php';
 require_once ISOSCELES_PATH.'extlibs/simpletest/mock_objects.php';
 
 if (isset($argv[1]) && ($argv[1] == '--usage' || $argv[1] == '-h' || $argv[1] == '-help')) {
@@ -29,9 +27,6 @@ Usage: [environment vars...] php tests/all_tests.php [args...]
 
 Environment vars:
     TEST_DEBUG=1            Output debugging message during development
-    SKIP_UPGRADE_TESTS=1    Skip upgrade tests, ie, do a short run
-    TEST_TIMING=1           Output test run timing information
-    RD_MODE=1               Use database stored on RAM disk (for speed improvements)
 
 Arguments:
     -help, -h               Show this help message
@@ -41,14 +36,9 @@ Arguments:
     return;
 }
 
-$RUNNING_ALL_TESTS = true;
-$TOTAL_PASSES = 0;
-$TOTAL_FAILURES = 0;
-$start_time = microtime(true);
-
 $test_suite = new TestSuite('Isosceles tests');
-$test_suite->add(new TestOfConfig());
 $test_suite->add(new TestOfRouter());
+$test_suite->add(new TestOfConfig());
 $test_suite->add(new TestOfDAOFactory());
 $test_suite->add(new TestOfFileDataManager());
 $test_suite->add(new TestOfLoader());
@@ -58,33 +48,6 @@ $test_suite->add(new TestOfTestController());
 $test_suite->add(new TestOfUtils());
 $test_suite->add(new TestOfViewManager());
 
-$tr = new TextReporter();
-list($usec, $sec) = explode(" ", microtime());
-$start =  ((float)$usec + (float)$sec);
-$tests->run( $tr );
+//$tr = new TextReporter();
+//$test_suite->run( $tr );
 
-//if (getenv("TEST_TIMING")=="1") {
-//    list($usec, $sec) = explode(" ", microtime());
-//    $finish =  ((float)$usec + (float)$sec);
-//    $runtime = round($finish - $start);
-//    printf("Tests completed run in $runtime seconds\n");
-//}
-//if (isset($RUNNING_ALL_TESTS) && $RUNNING_ALL_TESTS) {
-//    $TOTAL_PASSES = $TOTAL_PASSES + $tr->getPassCount();
-//    $TOTAL_FAILURES = $TOTAL_FAILURES + $tr->getFailCount();
-//}
-//
-//$end_time = microtime(true);
-//$total_time = ($end_time - $start_time) / 60;
-//
-//echo "
-//Total passes: ".$TOTAL_PASSES."
-//Total failures: ".$TOTAL_FAILURES."
-//Time elapsed: ".round($total_time)." minute(s)
-//
-//";
-
-//echo trim(exec("cd ".ISOSCELES_PATH."docs/source/; wc -w `find ./ -type f -name \*.rst` | tail -n 1")) .
-//" words of application documentation
-//
-//";

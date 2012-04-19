@@ -1,4 +1,4 @@
 <?php
 
-$TEST_DATABASE = 'isosceles_tests';
+$TEST_DATABASE = 'isosceles';
 

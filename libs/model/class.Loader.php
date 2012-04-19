@@ -155,6 +155,6 @@ class Loader {
             require_once self::$special_classes[$class];
             return;
         }
-        error_log("Class ".$class." not found");
+        //error_log("Class ".$class." not found");
     }
 }

@@ -1,4 +1,4 @@
-# Isosceles: Starter kit for PHP5 webapps
+# Isosceles: Starter kit for PHP5 webapps [![Build Status](https://secure.travis-ci.org/ginatrapani/isosceles.png)](http://travis-ci.org/ginatrapani/isosceles)
 
 Isosceles is an object-oriented, PHP5 web application starter kit based on [ThinkUp](http://thinkupapp.com/)'s
 underpinnings. Isosceles provides a simple MVC framework, database agnosticism, caching, dynamic class loading,
