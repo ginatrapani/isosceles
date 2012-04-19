@@ -2,7 +2,7 @@
 
 Isosceles is an object-oriented, PHP5 web application starter kit based on [ThinkUp](http://thinkupapp.com/)'s
 underpinnings. Isosceles provides a simple MVC framework, database agnosticism, caching, dynamic class loading,
-single-file configuration, and common actions like user registration, login, and logging.
+single-file configuration, URL routing and (eventually) common actions like user registration, login, and logging.
 
 Isosceles' name was inspired by the architecture of New York City's 
 [One World Trade Center](http://en.wikipedia.org/wiki/One_World_Trade_Center).
@@ -10,7 +10,7 @@ Isosceles' name was inspired by the architecture of New York City's
 ## Features
 
 Isosceles is the PHP framework that runs [ThinkUp](http://thinkupapp.com/), extracted and abstracted for reuse. It is
-nowhere near done, but its current feature set includes:
+nowhere near done. Its current feature set includes:
 
 * [Model View Controller](http://en.wikipedia.org/wiki/Model_view_controller) framework, using
 [Smarty](http://smarty.net) and [Bootstrap](http://twitter.github.com/bootstrap/) for the view
@@ -18,11 +18,12 @@ nowhere near done, but its current feature set includes:
 [PDO](http://us.php.net/manual/en/book.pdo.php)
 * Dynamic configuration through single config file
 * Caching to disk (via [Smarty](http://smarty.net))
-* Common webapp tasks like user registration and login, application settings, and activity logging
+* URL routing
 * A simple database query profiler
-* Testing framework (using [SimpleTest](http://www.simpletest.org/))
+* Testing framework (using [SimpleTest](http://www.simpletest.org/)) with Travis CI hooks
 
-Isosceles is in beta and incomplete. In future releases it will get more common framework features, like routing.
+Isosceles is in beta and incomplete. In future releases it will get more features which demonstrate its use, like user
+registration, login, application settings, and logging.
 
 ## License
 
