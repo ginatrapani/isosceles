@@ -340,11 +340,11 @@ class TestOfPDODAO extends IsoscelesUnitTestCase {
         $test_dao = new TestMySQLDAO();
         $tz_server = $test_dao->getTimezoneOffset();
 
-        //        if ($this->isTimeZoneSupported()) {
-        //            $this->assertEqual('Europe/London', $tz_server['tz_offset']);
-        //} else {
-        $this->assertEqual($tz_config, $tz_server['tz_offset']);
-        //        }
+        if ($this->isTimeZoneSupported()) {
+            $this->assertEqual('Europe/London', $tz_server['tz_offset']);
+        } else {
+            $this->assertEqual($tz_config, $tz_server['tz_offset']);
+        }
         Config::destroyInstance();
     }
 
@@ -423,6 +423,6 @@ class TestOfPDODAO extends IsoscelesUnitTestCase {
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
         $mysql_time = $row['time'];
         $php_time = strtotime('2011-09-01 00:00:00');
-        //$this->assertEqual($mysql_time, $php_time);
+        $this->assertEqual($mysql_time, $php_time);
     }
 }

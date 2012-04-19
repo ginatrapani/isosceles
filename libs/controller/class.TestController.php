@@ -42,6 +42,12 @@ class TestController extends Controller {
             $this->setViewTemplate('testcontroller.tpl');
         }
         $this->addToView('test', 'Testing, testing, 123');
+        if (isset($_GET['username'])) {
+            $this->addToView('username', $_GET['username']);
+        }
+        if (isset($_GET['network'])) {
+            $this->addToView('network', $_GET['network']);
+        }
         return $this->generateView();
     }
 }

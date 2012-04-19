@@ -48,6 +48,7 @@ $start_time = microtime(true);
 
 $test_suite = new TestSuite('Isosceles tests');
 $test_suite->add(new TestOfConfig());
+$test_suite->add(new TestOfRouter());
 $test_suite->add(new TestOfDAOFactory());
 $test_suite->add(new TestOfFileDataManager());
 $test_suite->add(new TestOfLoader());
