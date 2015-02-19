@@ -22,7 +22,7 @@ class Router {
         }
         $path_components = explode('/', $path);
 
-        $slug = $path_components[1];
+        $slug = (isset($path_components[1]))?$path_components[1]:'';
         $slug = ($slug=='')?'index':$slug;
         if (isset(self::$routes[$slug])) {
             if (isset(self::$route_parameters[$slug])) {
