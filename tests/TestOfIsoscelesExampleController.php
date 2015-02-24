@@ -58,13 +58,7 @@ class TestOfIsoscelesExampleController extends IsoscelesBasicUnitTestCase {
         $this->assertEqual($v_mgr->getTemplateDataItem('test'), 'Testing, testing, 123');
         $this->assertEqual($v_mgr->getTemplateDataItem('app_title'), "My Web App");
         $this->debug($results);
-        $this->assertEqual($results, '<html>
-<head>
-<title>My Web App</title>
-</head>
-<body>
-
-<a href="'.$config->getValue('site_root_path').'">My Web App</a>: Testing, testing, 123 | Not logged in');
+        $this->assertPattern('/My Web App/', $results);
     }
 
     /**
