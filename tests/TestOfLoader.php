@@ -41,8 +41,9 @@ class TestOfLoader extends IsoscelesBasicUnitTestCase {
         // check default lookup path without additionalPath
         $this->assertEqual( Loader::getLookupPath(), array(
         ISOSCELES_PATH . 'libs/model/',
+        ISOSCELES_PATH . 'libs/dao/',
         ISOSCELES_PATH . 'libs/controller/',
-        ISOSCELES_PATH . 'libs/model/exceptions/'
+        ISOSCELES_PATH . 'libs/exceptions/'
         ));
 
         // check special classes
@@ -60,8 +61,9 @@ class TestOfLoader extends IsoscelesBasicUnitTestCase {
         // check lookup path with single additionalPath
         $this->assertEqual( Loader::getLookupPath(), array(
         ISOSCELES_PATH . 'libs/model/',
+        ISOSCELES_PATH . 'libs/dao/',
         ISOSCELES_PATH . 'libs/controller/',
-        ISOSCELES_PATH . 'libs/model/exceptions/',
+        ISOSCELES_PATH . 'libs/exceptions/',
         ISOSCELES_PATH . 'tests/classes'
         ));
     }
@@ -79,8 +81,9 @@ class TestOfLoader extends IsoscelesBasicUnitTestCase {
         // check lookup path with array additionalPath
         $this->assertEqual( Loader::getLookupPath(), array(
         ISOSCELES_PATH . 'libs/model/',
+        ISOSCELES_PATH . 'libs/dao/',
         ISOSCELES_PATH . 'libs/controller/',
-        ISOSCELES_PATH . 'libs/model/exceptions/',
+        ISOSCELES_PATH . 'libs/exceptions/',
         ISOSCELES_PATH . 'tests',
         ISOSCELES_PATH . 'tests/classes'
         ));
@@ -114,15 +117,17 @@ class TestOfLoader extends IsoscelesBasicUnitTestCase {
         Loader::register();
         $this->assertEqual( Loader::getLookupPath(), array(
         ISOSCELES_PATH . 'libs/model/',
+        ISOSCELES_PATH . 'libs/dao/',
         ISOSCELES_PATH . 'libs/controller/',
-        ISOSCELES_PATH . 'libs/model/exceptions/',
+        ISOSCELES_PATH . 'libs/exceptions/'
         ));
 
         Loader::addPath(ISOSCELES_PATH . 'tests/classes');
         $this->assertEqual( Loader::getLookupPath(), array(
         ISOSCELES_PATH . 'libs/model/',
+        ISOSCELES_PATH . 'libs/dao/',
         ISOSCELES_PATH . 'libs/controller/',
-        ISOSCELES_PATH . 'libs/model/exceptions/',
+        ISOSCELES_PATH . 'libs/exceptions/',
         ISOSCELES_PATH . 'tests/classes'
         ));
     }

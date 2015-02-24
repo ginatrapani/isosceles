@@ -7,6 +7,8 @@ ALTER DATABASE DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
 CREATE TABLE iso_users (
   id int(20) NOT NULL AUTO_INCREMENT COMMENT 'Internal unique ID.',
   full_name varchar(200) NOT NULL COMMENT 'User full name.',
+  user_id varchar(30) NOT NULL COMMENT 'User ID on a given network.',
+  user_name varchar(200) NOT NULL COMMENT 'User handle.',
   pwd varchar(255) DEFAULT NULL COMMENT 'Hash of the owner password',
   pwd_salt varchar(255) NOT NULL COMMENT 'Salt for securely hashing the owner password',
   email varchar(200) NOT NULL COMMENT 'User email.',
@@ -19,6 +21,5 @@ CREATE TABLE iso_users (
   failed_logins int(11) NOT NULL DEFAULT '0' COMMENT 'Current number of failed login attempts.',
   account_status varchar(150) NOT NULL DEFAULT '' COMMENT 'Description of account status, i.e., "Inactive due to excessive failed login attempts".',
   api_key varchar(32) NOT NULL COMMENT 'Key to authorize API calls.',
-  PRIMARY KEY (id),
-  UNIQUE KEY email (email)
+  PRIMARY KEY (id)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='User account details.';

@@ -65,8 +65,9 @@ class Loader {
         // set default lookup path for classes
         self::$lookup_path = array(
         ISOSCELES_PATH . 'libs/model/',
+        ISOSCELES_PATH . 'libs/dao/',
         ISOSCELES_PATH . 'libs/controller/',
-        ISOSCELES_PATH . 'libs/model/exceptions/'
+        ISOSCELES_PATH . 'libs/exceptions/'
         );
 
         // set default lookup path for special classes

@@ -224,7 +224,7 @@ class TestOfPDODAO extends IsoscelesUnitTestCase {
         }
     }
 
-    public function testSelectRecodsAsArray() {
+    public function testSelectRecordsAsArray() {
         $this->builders = self::buildData();
         $testdao = DAOFactory::getDAO('TestDAO');
 
