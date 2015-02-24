@@ -496,4 +496,21 @@ abstract class Controller {
             throw new InvalidCSRFTokenException($token);
         }
     }
+    /**
+     * Send Location header
+     * @param str $destination
+     * @return bool Whether or not redirect header was sent
+     */
+    protected function redirect($destination=null) {
+        if (!isset($destination)) {
+            $destination = Config::getInstance()->getValue('site_root_path  ');
+        }
+        $this->redirect_destination = $destination; //for validation
+        if ( !headers_sent() ) {
+            header('Location: '.$destination);
+            return true;
+        } else {
+            return false;
+        }
+    }
 }

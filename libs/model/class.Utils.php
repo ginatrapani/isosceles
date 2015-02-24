@@ -126,4 +126,76 @@ class Utils {
         ob_end_clean();
         return $content;
     }
+
+    /**
+     * Get the application's host name or server name, i.e., example.com.
+     * @return str Host name either set by PHP global vars or stored in the database
+     */
+    public static function getApplicationHostName() {
+        //First attempt to get the host name without querying the database
+        //Try SERVER_NAME
+        $server = empty($_SERVER['SERVER_NAME']) ? '' : $_SERVER['SERVER_NAME'];
+        //Second, try HTTP_HOST
+        if ($server == '' ) {
+            $server = empty($_SERVER['HTTP_HOST']) ? '' : $_SERVER['HTTP_HOST'];
+        }
+        //Finally fall back to defined application setting in config
+        if ($server == '') {
+            $config = Config::getInstance();
+            $server = $config->getValue('application_host');
+        }
+        //domain name is always lowercase
+        $server = strtolower($server);
+        return $server;
+    }
+
+    /**
+     * Get application URL
+     * @param bool $replace_localhost_with_ip
+     * @param bool $use_filesystem_path Use filesystem path instead of path specified in config.inc.php
+     * @return str application URL
+     */
+    public static function getApplicationURL($replace_localhost_with_ip = false, $use_filesystem_path = true,
+        $should_url_encode = true) {
+        $server = self::getApplicationHostName();
+        if ($replace_localhost_with_ip) {
+            $server = ($server == 'localhost')?'127.0.0.1':$server;
+        }
+        if ($use_filesystem_path) {
+            $site_root_path = Utils::getSiteRootPathFromFileSystem();
+        } else {
+            $cfg = Config::getInstance();
+            $site_root_path = $cfg->getValue('site_root_path');
+        }
+        if ($should_url_encode) {
+            //URLencode everything except spaces in site_root_path
+            $site_root_path = str_replace('%2f', '/', strtolower(urlencode($site_root_path)));
+        }
+        if  (isset($_SERVER['SERVER_PORT']) && $_SERVER['SERVER_PORT'] != '80') { //non-standard port
+            if (isset($_SERVER['HTTPS']) && $_SERVER['SERVER_PORT'] == '443') { //account for standard https port
+                $port = '';
+            } else {
+                $port = ':'.$_SERVER['SERVER_PORT'];
+            }
+        } else {
+            $port = '';
+        }
+        return 'http'.(empty($_SERVER['HTTPS'])?'':'s').'://'.$server.$port.$site_root_path;
+    }
+
+    /**
+     * Get site root path from filesystem.
+     * @return str
+     */
+    public static function getSiteRootPathFromFileSystem() {
+        if (isset($_SERVER['PHP_SELF'])) {
+            $current_script_path = explode('/', $_SERVER['PHP_SELF']);
+        } else {
+            $current_script_path = array();
+        }
+        array_pop($current_script_path);
+        $current_script_path = implode('/', $current_script_path) . '/';
+        echo $current_script_path;
+        return $current_script_path;
+    }
 }

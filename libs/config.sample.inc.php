@@ -26,11 +26,14 @@ $ISOSCELES_CFG['timezone']                  = 'UTC';
 $ISOSCELES_CFG['cache_pages']               = false;
 
 // Smarty file cache lifetime in seconds; defaults to 600 (10 minutes)caching
-$ISOSCELES_CFG['cache_lifetime']               = 600;
+$ISOSCELES_CFG['cache_lifetime']            = 600;
 
 // The crawler, when triggered by requests to the RSS feed, will only launch if it's been
 // 20 minutes or more since the last crawl.
 $ISOSCELES_CFG['rss_crawler_refresh_rate']  = 20;
+
+// Application host - this is a fallback value if SERVER_NAME and HTTP_HOST are not set
+$ISOSCELES_CFG['application_host']          = 'localhost';
 
 /************************************************/
 /***  DATABASE CONFIG                         ***/
