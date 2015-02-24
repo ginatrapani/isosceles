@@ -12,7 +12,7 @@ if ( !defined('TESTS_RUNNING') ) {
 }
 
 //Register our lazy class loader
-require_once ISOSCELES_PATH.'libs/model/class.Loader.php';
+require_once ISOSCELES_PATH.'libs/class.Loader.php';
 
 Loader::register(array(
 ISOSCELES_PATH . 'tests/',

@@ -59,11 +59,12 @@ class Loader {
     private static function setLookupPath($additional_paths = null ) {
         // check required named constants
         if ( !defined('ISOSCELES_PATH') ) {
-            define('ISOSCELES_PATH', str_replace("\\",'/', dirname(dirname(dirname(__FILE__)))) .'/');
+            define('ISOSCELES_PATH', str_replace("\\",'/', dirname(dirname(__FILE__))) .'/');
         }
 
         // set default lookup path for classes
         self::$lookup_path = array(
+        ISOSCELES_PATH . 'libs/',
         ISOSCELES_PATH . 'libs/model/',
         ISOSCELES_PATH . 'libs/dao/',
         ISOSCELES_PATH . 'libs/controller/',

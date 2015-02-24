@@ -47,6 +47,8 @@ $test_suite->add(new TestOfProfiler());
 $test_suite->add(new TestOfIsoscelesExampleController());
 $test_suite->add(new TestOfUtils());
 $test_suite->add(new TestOfViewManager());
+//@TODO Figure out why we can't include TestOfFixtureBuilder here
+//$test_suite->add(new TestOfFixtureBuilder());
 
 //$tr = new TextReporter();
 //$test_suite->run( $tr );

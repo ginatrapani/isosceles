@@ -40,6 +40,7 @@ class TestOfLoader extends IsoscelesBasicUnitTestCase {
 
         // check default lookup path without additionalPath
         $this->assertEqual( Loader::getLookupPath(), array(
+        ISOSCELES_PATH . 'libs/',
         ISOSCELES_PATH . 'libs/model/',
         ISOSCELES_PATH . 'libs/dao/',
         ISOSCELES_PATH . 'libs/controller/',
@@ -60,6 +61,7 @@ class TestOfLoader extends IsoscelesBasicUnitTestCase {
 
         // check lookup path with single additionalPath
         $this->assertEqual( Loader::getLookupPath(), array(
+        ISOSCELES_PATH . 'libs/',
         ISOSCELES_PATH . 'libs/model/',
         ISOSCELES_PATH . 'libs/dao/',
         ISOSCELES_PATH . 'libs/controller/',
@@ -80,6 +82,7 @@ class TestOfLoader extends IsoscelesBasicUnitTestCase {
 
         // check lookup path with array additionalPath
         $this->assertEqual( Loader::getLookupPath(), array(
+        ISOSCELES_PATH . 'libs/',
         ISOSCELES_PATH . 'libs/model/',
         ISOSCELES_PATH . 'libs/dao/',
         ISOSCELES_PATH . 'libs/controller/',
@@ -116,6 +119,7 @@ class TestOfLoader extends IsoscelesBasicUnitTestCase {
     public function testAdditionalPathAfterInitialRegister() {
         Loader::register();
         $this->assertEqual( Loader::getLookupPath(), array(
+        ISOSCELES_PATH . 'libs/',
         ISOSCELES_PATH . 'libs/model/',
         ISOSCELES_PATH . 'libs/dao/',
         ISOSCELES_PATH . 'libs/controller/',
@@ -124,6 +128,7 @@ class TestOfLoader extends IsoscelesBasicUnitTestCase {
 
         Loader::addPath(ISOSCELES_PATH . 'tests/classes');
         $this->assertEqual( Loader::getLookupPath(), array(
+        ISOSCELES_PATH . 'libs/',
         ISOSCELES_PATH . 'libs/model/',
         ISOSCELES_PATH . 'libs/dao/',
         ISOSCELES_PATH . 'libs/controller/',

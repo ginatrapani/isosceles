@@ -22,7 +22,7 @@
  * @license http://www.gnu.org/licenses/gpl.html
  */
 
-require_once ISOSCELES_PATH.'libs/model/class.Loader.php';
+require_once ISOSCELES_PATH.'libs/class.Loader.php';
 
 class IsoscelesBasicUnitTestCase extends UnitTestCase {
 
