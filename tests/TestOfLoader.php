@@ -47,7 +47,7 @@ class TestOfLoader extends IsoscelesBasicUnitTestCase {
 
         // check special classes
         $this->assertEqual( Loader::getSpecialClasses(),
-        array('Smarty'=>ISOSCELES_PATH . 'extlibs/Smarty-3.1.8/libs/Smarty.class.php'));
+        array('Smarty'=>ISOSCELES_PATH . 'extlibs/Smarty-3.1.21/libs/Smarty.class.php'));
     }
 
     public function testLoaderRegisterWithStringAdditionalPath() {
