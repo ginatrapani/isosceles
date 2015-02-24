@@ -40,10 +40,10 @@ class Session {
     }
     /**
      * Complete login action.
-     * @param Subscriber $subscriber
+     * @param str $email
      */
-    public static function completeLogin($subscriber) {
-        SessionCache::put('user', $subscriber->email);
+    public static function completeLogin($email) {
+        SessionCache::put('user', $email);
         // set a CSRF token
         SessionCache::put('csrf_token', uniqid(mt_rand(), true));
         if (isset($_SESSION["MODE"]) && $_SESSION["MODE"] == 'TESTS') {

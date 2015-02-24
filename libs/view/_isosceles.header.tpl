@@ -44,6 +44,8 @@
           <ul class="nav navbar-nav">
             <li class="active"><a href="/">Home</a></li>
             <li><a href="http://ginatrapani.github.io/isosceles/">Isosceles</a></li>
+            <li><a href="{$site_root_path}private/">Private</a></li>
+            <li>{if isset($logged_in_user)}<a href="{$site_root_path}signout/">Sign out</a>{else}<a href="{$site_root_path}signin/">Sign in</a>{/if}</li>
           </ul>
         </div><!--/.nav-collapse -->
       </div>

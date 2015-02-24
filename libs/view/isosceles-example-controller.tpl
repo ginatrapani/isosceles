@@ -4,8 +4,7 @@
 
 <h1>Welcome to {$app_title}</h1>
 
-
-<p><a href="{$site_root_path}{$logo_link}">{$app_title}</a>: {$test} | {if isset($logged_in_user)}Logged in as {$logged_in_user}{else}Not logged in{/if}
+<p><a href="{$site_root_path}{$logo_link}">{$app_title}</a>: {$test} | {if isset($logged_in_user)}Signed in as {$logged_in_user} | <a href="{$site_root_path}signout/">Sign out</a>{else}<a href="{$site_root_path}signin/">Sign in</a>{/if}
 {if isset($username) and isset($network)}
     <br><br><br>
     Username: {$username}<br>

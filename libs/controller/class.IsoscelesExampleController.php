@@ -25,6 +25,13 @@
 class IsoscelesExampleController extends Controller {
 
     public function control() {
+        //Set logged_in_user if there is one
+        if (Session::isLoggedIn()) {
+            $logged_in_user = Session::getLoggedInUser();
+            $this->addToView('logged_in_user', $logged_in_user);
+        }
+
+        //Demonstrate content types
         if (isset($_GET['json'])) {
             $this->setJsonData( array( 'aname' => 'a value', 'alist' => array('apple', 'pear', 'banana'), 'alink' =>
             'http://isosceleskit.org'));
@@ -36,19 +43,25 @@ class IsoscelesExampleController extends Controller {
             $this->addHeaderCSS('assets/css/bla.css');
             $this->setViewTemplate('isosceles-example-controller.tpl');
         }
+
+        //Demonstrate exceptions
         if (isset($_GET['throwexception'])) {
             throw new Exception("Testing exception handling!");
         } else if (!isset($_GET['json']) && !isset($_GET['css'])) {
             $this->setViewTemplate('isosceles-example-controller.tpl');
         }
+
         $this->addToView('test', 'Testing, testing, 123');
+
+        //Demonstrate parameters via router
         if (isset($_GET['username'])) {
             $this->addToView('username', $_GET['username']);
         }
         if (isset($_GET['network'])) {
             $this->addToView('network', $_GET['network']);
         }
-        //User messaging
+
+        //Demonstrate user messaging
         if (isset($_GET['success'])) {
             $this->addSuccessMessage($_GET['success']);
         }
