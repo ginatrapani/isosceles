@@ -64,7 +64,7 @@ class TestOfViewManager extends IsoscelesBasicUnitTestCase {
         $v_mgr->assign('test_var_1', "Testing, testing, 123");
         $this->assertEqual($v_mgr->getTemplateDataItem('test_var_1'), "Testing, testing, 123");
 
-        $this->assertEqual($v_mgr->getTemplateDataItem('app_title'), 'My Isosceles Application');
+        $this->assertEqual($v_mgr->getTemplateDataItem('app_title'), 'My Web App');
         $this->assertEqual($v_mgr->getTemplateDataItem('logo_link'), '');
         $this->assertEqual($v_mgr->getTemplateDataItem('site_root_path'), '/my/isosceles/folder/');
         $this->assertEqual($v_mgr->cache_lifetime, 1200);

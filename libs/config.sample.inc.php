@@ -3,12 +3,12 @@
 /***  APPLICATION CONFIG                      ***/
 /************************************************/
 
-// Application title prefix - 'ThinkUp' will be appended to it in page titles
-$ISOSCELES_CFG['app_title']                 = 'My Isosceles Application';
+// Application title prefix - 'My Web App' will be appended to it in page titles
+$ISOSCELES_CFG['app_title']                 = 'My Web App';
 
 // Public path of isosceles's /webapp/ folder on your web server.
 // For example, if the /webapp/ folder is located at http://yourdomain/isosceles/, set to '/isosceles/'.
-$ISOSCELES_CFG['site_root_path']            = '/isosceles/webapp/';
+$ISOSCELES_CFG['site_root_path']            = '/isosceles/www-example/';
 
 // Server path to /isosceles/ source code folder, dirname( __FILE__ ) . '/'; by default
 $ISOSCELES_CFG['source_root_path']          = dirname( __FILE__ ) . '/';
@@ -19,7 +19,7 @@ $ISOSCELES_CFG['datadir_path']              = $ISOSCELES_CFG['source_root_path']
 // Application template path
 $ISOSCELES_CFG['templates_path']            = null;
 
-// Your timezone
+// Your timezone in PHP format, for example America/New_York
 $ISOSCELES_CFG['timezone']                  = 'UTC';
 
 // Toggle Smarty caching. true: Smarty caching on, false: Smarty caching off
@@ -82,7 +82,7 @@ if ((isset($_SESSION["MODE"]) && $_SESSION["MODE"] == "TESTS") && ! isset($_SESS
     //$ISOSCELES_CFG['source_root_path']          = '/your-server-path-to/isosceles/';
     //$ISOSCELES_CFG['db_user']                   = 'your_test_database_username';
     //$ISOSCELES_CFG['db_password']               = 'your_test_database_password';
-    //$ISOSCELES_CFG['db_name']                   = 'your_test_database_name'; //by default, isosceles_tests
+    $ISOSCELES_CFG['db_name']                   = 'isosceles_tests';
     ini_set('error_reporting', E_STRICT);
 }
 

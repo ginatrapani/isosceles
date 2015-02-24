@@ -37,12 +37,11 @@ class TestOfRouter extends IsoscelesBasicUnitTestCase {
 
         $_SERVER['REQUEST_URI'] = "/";
         $results = $router->route(true);
-        $this->assertPattern('/My Isosceles Application/', $results);
-
+        $this->assertPattern('/My Web App/', $results);
 
         $_SERVER['REQUEST_URI'] = "/test/user/ginatrapani";
         $results = $router->route(true);
-        $this->assertPattern('/My Isosceles Application/', $results);
+        $this->assertPattern('/My Web App/', $results);
 
         $_SERVER['REQUEST_URI'] = "/nonexistent/user/ginatrapani";
         $results = $router->route(true);
@@ -55,6 +54,6 @@ class TestOfRouter extends IsoscelesBasicUnitTestCase {
 
         $_SERVER['REQUEST_URI'] = "/user/twitter/username";
         $results = $router->route(true);
-        $this->assertPattern('/My Isosceles Application/', $results);
+        $this->assertPattern('/My Web App/', $results);
     }
 }

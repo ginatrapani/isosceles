@@ -56,15 +56,15 @@ class TestOfTestController extends IsoscelesBasicUnitTestCase {
         //test if view variables were set correctly
         $v_mgr = $controller->getViewManager();
         $this->assertEqual($v_mgr->getTemplateDataItem('test'), 'Testing, testing, 123');
-        $this->assertEqual($v_mgr->getTemplateDataItem('app_title'), "My Isosceles Application");
+        $this->assertEqual($v_mgr->getTemplateDataItem('app_title'), "My Web App");
         $this->debug($results);
         $this->assertEqual($results, '<html>
 <head>
-<title>My Isosceles Application</title>
+<title>My Web App</title>
 </head>
 <body>
 
-<a href="'.$config->getValue('site_root_path').'">My Isosceles Application</a>: Testing, testing, 123 | Not logged in');
+<a href="'.$config->getValue('site_root_path').'">My Web App</a>: Testing, testing, 123 | Not logged in');
     }
 
     /**
