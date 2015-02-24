@@ -12,7 +12,7 @@
  * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
  * details.
  *
- * You should have received a copy of the GNU General Public License along with ThinkUp.  If not, see
+ * You should have received a copy of the GNU General Public License along with Isosceles.  If not, see
  * <http://www.gnu.org/licenses/>.
  *
  * IsoscelesBasicUnitTestCase
@@ -113,7 +113,7 @@ class IsoscelesBasicUnitTestCase extends UnitTestCase {
 
         $datadir_path = FileDataManager::getDataPath();
         if (!is_writable($datadir_path)) {
-            $message = "In order to test your ThinkUp installation, $datadir_path must be writable.";
+            $message = "In order to test your application, $datadir_path must be writable.";
         }
 
         global $TEST_DATABASE;
