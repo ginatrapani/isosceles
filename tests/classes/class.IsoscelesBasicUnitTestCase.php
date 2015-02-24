@@ -30,8 +30,7 @@ class IsoscelesBasicUnitTestCase extends UnitTestCase {
         parent::setUp();
         Loader::register(array(
         ISOSCELES_PATH . 'tests/',
-        ISOSCELES_PATH . 'tests/classes/',
-        ISOSCELES_PATH . 'extlibs/fixtures/',
+        ISOSCELES_PATH . 'tests/classes/'
         ));
 
         $config = Config::getInstance();

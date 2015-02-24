@@ -18,7 +18,6 @@
  * @license http://www.gnu.org/licenses/gpl.html
  */
 
-
 require_once dirname(__FILE__).'/init.tests.php';
 require_once ISOSCELES_PATH.'extlibs/simpletest/autorun.php';
 require_once ISOSCELES_PATH.'libs/config.inc.php';
@@ -28,8 +27,6 @@ class TestOfConfig extends IsoscelesBasicUnitTestCase {
     public function setUp() {
         parent::setUp();
         $this->config = Config::getInstance();
-        //        $option_dao = new OptionMySQLDAO();
-        //        $this->pdo = $option_dao->connect();
     }
 
     public function tearDown() {
@@ -46,13 +43,9 @@ class TestOfConfig extends IsoscelesBasicUnitTestCase {
 
     public function testGetValuesArray() {
         require ISOSCELES_PATH.'libs/config.inc.php';
-        //        require ISOSCELES_PATH.'install/version.php';
         $config = Config::getInstance();
         //tests assume profiler and caching is off
         $ISOSCELES_CFG['cache_pages']=false;
-        //        $ISOSCELES_CFG['ISOSCELES_VERSION'] = $ISOSCELES_VERSION;
-        //        $ISOSCELES_CFG['ISOSCELES_VERSION_REQUIRED'] =
-        //        array('php' => $ISOSCELES_VERSION_REQUIRED['php'], 'mysql' => $ISOSCELES_VERSION_REQUIRED['mysql']);
         $ISOSCELES_CFG['enable_profiler']=false;
         $values_array = $config->getValuesArray();
         $this->assertIdentical($ISOSCELES_CFG, $values_array);
@@ -87,46 +80,6 @@ class TestOfConfig extends IsoscelesBasicUnitTestCase {
         }
         $this->restoreConfigFile();
     }
-
-    //    public function testDBConfigValues() {
-    //        Config::destroyInstance();
-    //        $config = Config::getInstance();
-    //        $this->assertEqual($config->getValue('is_registration_open'), '', "uses default app config value");
-    //        $this->assertFalse($config->getValue('recaptcha_enable'), "uses default app config value");
-    //        $this->assertEqual($config->getValue('recaptcha_private_key'), '', "uses default app config value");
-    //        $this->assertEqual($config->getValue('recaptcha_public_key'), '', "uses default app config value");
-    //
-    //        if (isset($_SESSION)) {
-    //            $this->unsetArray($_SESSION);
-    //        }
-    //
-    //        $bvalue = array('namespace' => OptionDAO::APP_OPTIONS, 'option_name' => 'recaptcha_enable',
-    //        'option_value' => 'false');
-    //        $bdata = FixtureBuilder::build('options', $bvalue);
-    //        $this->assertFalse($config->getValue('is_registration_open'), "uses default app config value");
-    //        $this->assertFalse($config->getValue('recaptcha_enable'), "uses db config value");
-    //        $this->assertEqual($config->getValue('recaptcha_private_key'), '', "uses default app config value");
-    //        $this->assertEqual($config->getValue('recaptcha_public_key'), '', "uses default app config value");
-    //
-    //        if (isset($_SESSION)) {
-    //            $this->unsetArray($_SESSION);
-    //        }
-    //        FixtureBuilder::truncateTable('options');
-    //        $bvalue['option_value'] = 'true';
-    //        $bvalue2 = array('namespace' => OptionDAO::APP_OPTIONS, 'option_name' => 'recaptcha_private_key',
-    //        'option_value' => 'abc123');
-    //        $bvalue3 = array('namespace' => OptionDAO::APP_OPTIONS, 'option_name' => 'recaptcha_public_key',
-    //        'option_value' => 'abc123public');
-    //        $bvalue4 = array('namespace' => OptionDAO::APP_OPTIONS, 'option_name' => 'is_registration_open',
-    //        'option_value' => 'true');
-    //        $bdata2 = FixtureBuilder::build('options', $bvalue);
-    //        $bdata3 = FixtureBuilder::build('options', $bvalue2);
-    //        $bdata4 = FixtureBuilder::build('options', $bvalue3);
-    //        $bdata5 = FixtureBuilder::build('options', $bvalue4);
-    //        $this->assertTrue($config->getValue('recaptcha_enable'), "uses db config value");
-    //        $this->assertEqual($config->getValue('recaptcha_private_key'), 'abc123', "uses db config value");
-    //        $this->assertEqual($config->getValue('is_registration_open'), true, "uses db config value");
-    //    }
 
     public function testGetGMTOffset() {
         Config::destroyInstance();

@@ -16,6 +16,5 @@ require_once ISOSCELES_PATH.'libs/class.Loader.php';
 
 Loader::register(array(
 ISOSCELES_PATH . 'tests/',
-ISOSCELES_PATH . 'tests/classes/',
-ISOSCELES_PATH . 'extlibs/fixtures/'
+ISOSCELES_PATH . 'tests/classes/'
 ));

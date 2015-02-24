@@ -24,7 +24,6 @@ require_once ISOSCELES_PATH.'libs/config.inc.php';
 
 class TestOfUtils extends IsoscelesBasicUnitTestCase {
 
-
     public function testIndentJSON() {
         $data = array('jam', 'jelly', 'ham', 'biscuits', array ( 'cola', 'beer', 'grapefruit juice' ));
 
@@ -124,5 +123,4 @@ class TestOfUtils extends IsoscelesBasicUnitTestCase {
         //$tz = date_default_timezone_get();
         $this->assertEqual($tz, 'America/New_York');
     }
-
 }
