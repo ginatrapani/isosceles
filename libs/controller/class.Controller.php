@@ -189,15 +189,15 @@ abstract class Controller {
         } else if (isset($this->json_data) ) {
             $this->setContentType('application/json');
             if ($this->view_mgr->isViewCached()) {
-                if ($this->view_mgr->is_cached('json.tpl', $this->getCacheKeyString())) {
-                    return $this->view_mgr->fetch('json.tpl', $this->getCacheKeyString());
+                if ($this->view_mgr->is_cached('isosceles.json.tpl', $this->getCacheKeyString())) {
+                    return $this->view_mgr->fetch('isosceles.json.tpl', $this->getCacheKeyString());
                 } else {
                     $this->prepareJSON();
-                    return $this->view_mgr->fetch('json.tpl', $this->getCacheKeyString());
+                    return $this->view_mgr->fetch('isosceles.json.tpl', $this->getCacheKeyString());
                 }
             } else {
                 $this->prepareJSON();
-                return $this->view_mgr->fetch('json.tpl');
+                return $this->view_mgr->fetch('isosceles.json.tpl');
             }
         } else {
             throw new Exception(get_class($this).': No view template specified');
@@ -342,7 +342,7 @@ abstract class Controller {
                 $this->disableCaching();
                 $profiler->add($total_time,
                     "total page execution time, running ".$profiler->total_queries." queries.");
-                $this->setViewTemplate('_profiler.tpl');
+                $this->setViewTemplate('_isosceles.profiler.tpl');
                 $this->addToView('profile_items',$profiler->getProfile());
                 return  $results . $this->generateView();
             } else  {
@@ -358,13 +358,13 @@ abstract class Controller {
             }
             switch ($content_type) {
                 case 'application/json':
-                    $this->setViewTemplate('500.json.tpl');
+                    $this->setViewTemplate('isosceles.500.json.tpl');
                     break;
                 case 'text/plain':
-                    $this->setViewTemplate('500.txt.tpl');
+                    $this->setViewTemplate('isosceles.500.txt.tpl');
                     break;
                 default:
-                    $this->setViewTemplate('500.tpl');
+                    $this->setViewTemplate('isosceles.500.tpl');
             }
             $this->addToView('error_type', get_class($e));
             $this->addErrorMessage($e->getMessage());

@@ -78,7 +78,7 @@ class TestOfTestController extends IsoscelesBasicUnitTestCase {
         $controller = new TestController(true);
         $results = $controller->go();
 
-        $this->assertEqual($controller->getCacheKeyString(), '.httestcontroller.tpl-');
+        $this->assertEqual($controller->getCacheKeyString(), '.htisosceles.testcontroller.tpl-');
     }
 
     /**

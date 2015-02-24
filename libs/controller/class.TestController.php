@@ -34,12 +34,12 @@ class TestController extends Controller {
             $this->setContentType('image/png');
         } else if (isset($_GET['css'])) {
             $this->addHeaderCSS('assets/css/bla.css');
-            $this->setViewTemplate('testcontroller.tpl');
+            $this->setViewTemplate('isosceles.testcontroller.tpl');
         }
         if (isset($_GET['throwexception'])) {
             throw new Exception("Testing exception handling!");
         } else if (!isset($_GET['json']) && !isset($_GET['css'])) {
-            $this->setViewTemplate('testcontroller.tpl');
+            $this->setViewTemplate('isosceles.testcontroller.tpl');
         }
         $this->addToView('test', 'Testing, testing, 123');
         if (isset($_GET['username'])) {
