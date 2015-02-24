@@ -6,7 +6,7 @@ php:
 
 before_script:
  - mysql -e 'create database isosceles_tests'
- - mysql isosceles < ./install/sql/build-db_mysql.sql
+ - mysql isosceles_tests < ./install/sql/build-db_mysql.sql
  - cp libs/config.sample.inc.php libs/config.inc.php
  - cp tests/config.sample.inc.php tests/config.tests.inc.php
  - mkdir libs/data
