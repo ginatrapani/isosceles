@@ -12,4 +12,4 @@ before_script:
  - mkdir libs/data
  - chmod -R 777 libs/data
 
-script: php tests/all_tests.php
+script: phpunit tests

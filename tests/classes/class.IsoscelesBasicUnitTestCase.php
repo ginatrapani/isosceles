@@ -24,7 +24,7 @@
 
 require_once ISOSCELES_PATH.'libs/class.Loader.php';
 
-class IsoscelesBasicUnitTestCase extends UnitTestCase {
+class IsoscelesBasicUnitTestCase extends PHPUnit_Framework_TestCase {
 
     public function setUp() {
         parent::setUp();

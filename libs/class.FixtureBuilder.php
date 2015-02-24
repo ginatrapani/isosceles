@@ -149,7 +149,7 @@ class FixtureBuilder {
         $table = Config::getInstance()->getValue('table_prefix') . $table;
         try {
             self::$pdo->query('truncate table ' . $table);
-        } catch(Exception $e) {
+        } catch (Exception $e) {
             throw new FixtureBuilderException('Unable to truncate table "' . $table . '" - ' . $e->getMessage());
         }
     }
