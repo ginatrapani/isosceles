@@ -48,6 +48,16 @@ class IsoscelesExampleController extends Controller {
         if (isset($_GET['network'])) {
             $this->addToView('network', $_GET['network']);
         }
+        //User messaging
+        if (isset($_GET['success'])) {
+            $this->addSuccessMessage($_GET['success']);
+        }
+        if (isset($_GET['error'])) {
+            $this->addErrorMessage($_GET['error']);
+        }
+        if (isset($_GET['info'])) {
+            $this->addInfoMessage($_GET['info']);
+        }
         return $this->generateView();
     }
 }

@@ -48,7 +48,9 @@ class Router {
         if (isset(self::$routes[$slug])) {
             if (isset(self::$route_parameters[$slug])) {
                 foreach (self::$route_parameters[$slug] as $index=>$parameter) {
-                    $_GET[$parameter] = $path_components[$index+2];
+                    if (isset($path_components[$index+2])) {
+                        $_GET[$parameter] = $path_components[$index+2];
+                    }
                 }
             }
             $controller = new self::$routes[$slug]($session_started);
