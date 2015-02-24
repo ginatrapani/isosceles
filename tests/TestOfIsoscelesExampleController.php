@@ -22,7 +22,7 @@ require_once dirname(__FILE__).'/init.tests.php';
 require_once ISOSCELES_PATH.'extlibs/simpletest/autorun.php';
 require_once ISOSCELES_PATH.'libs/config.inc.php';
 
-class TestOfTestController extends IsoscelesBasicUnitTestCase {
+class TestOfIsoscelesExampleController extends IsoscelesBasicUnitTestCase {
 
     public function setUp(){
         parent::setUp();
@@ -38,7 +38,7 @@ class TestOfTestController extends IsoscelesBasicUnitTestCase {
      * Test constructor
      */
     public function testConstructor() {
-        $controller = new TestController(true);
+        $controller = new IsoscelesExampleController(true);
         $this->assertTrue(isset($controller), 'constructor test');
     }
 
@@ -49,7 +49,7 @@ class TestOfTestController extends IsoscelesBasicUnitTestCase {
      */
     public function testControl() {
         $config = Config::getInstance();
-        $controller = new TestController(true);
+        $controller = new IsoscelesExampleController(true);
         $results = $controller->go();
 
         $this->assertEqual('text/html; charset=UTF-8', $controller->getContentType());
@@ -75,10 +75,10 @@ class TestOfTestController extends IsoscelesBasicUnitTestCase {
     public function testCacheKeyNoRequestParams() {
         $config = Config::getInstance();
         $config->setValue('cache_pages', true);
-        $controller = new TestController(true);
+        $controller = new IsoscelesExampleController(true);
         $results = $controller->go();
 
-        $this->assertEqual($controller->getCacheKeyString(), '.htisosceles.testcontroller.tpl-');
+        $this->assertEqual($controller->getCacheKeyString(), '.htisosceles-example-controller.tpl-');
     }
 
     /**
@@ -86,7 +86,7 @@ class TestOfTestController extends IsoscelesBasicUnitTestCase {
      */
     public function testJsonOutput() {
         $config = Config::getInstance();
-        $controller = new TestController(true);
+        $controller = new IsoscelesExampleController(true);
         $_GET['json'] = true;
         $results = $controller->go();
         unset($_GET['json']);
@@ -104,7 +104,7 @@ class TestOfTestController extends IsoscelesBasicUnitTestCase {
      */
     public function testAddJsScript() {
         $config = Config::getInstance();
-        $controller = new TestController(true);
+        $controller = new IsoscelesExampleController(true);
         $controller->addHeaderJavaScript('plugins/hellothinkup/assets/js/test.js');
         $results = $controller->go();
 
@@ -119,7 +119,7 @@ class TestOfTestController extends IsoscelesBasicUnitTestCase {
      */
     public function testAddHeader() {
         $config = Config::getInstance();
-        $controller = new TestController(true);
+        $controller = new IsoscelesExampleController(true);
         $_GET['text'] = true;
 
         $results = $controller->go();
@@ -131,7 +131,7 @@ class TestOfTestController extends IsoscelesBasicUnitTestCase {
      */
     public function testAddImageContentTypeHeader() {
         $config = Config::getInstance();
-        $controller = new TestController(true);
+        $controller = new IsoscelesExampleController(true);
         $_GET['png'] = true;
 
         $results = $controller->go();
@@ -143,7 +143,7 @@ class TestOfTestController extends IsoscelesBasicUnitTestCase {
      */
     public function testAddCSS2Header() {
         $config = Config::getInstance();
-        $controller = new TestController(true);
+        $controller = new IsoscelesExampleController(true);
         $_GET['css'] = true;
         $results = $controller->go();
         $this->debug($results);
@@ -158,7 +158,7 @@ class TestOfTestController extends IsoscelesBasicUnitTestCase {
      */
     public function testExceptionHandling() {
         $_GET['throwexception'] = 'yesindeedy';
-        $controller = new TestController(true);
+        $controller = new IsoscelesExampleController(true);
         $results = $controller->go();
 
         $v_mgr = $controller->getViewManager();

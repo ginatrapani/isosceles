@@ -21,19 +21,19 @@ class TestOfRouter extends IsoscelesBasicUnitTestCase {
 
     public function testAddRoute() {
         $router = new Router();
-        $router->addRoute('test', 'TestController');
-        $this->assertEqual(array('test'=>'TestController'), Router::$routes);
+        $router->addRoute('test', 'IsoscelesExampleController');
+        $this->assertEqual(array('test'=>'IsoscelesExampleController'), Router::$routes);
         $this->assertEqual(1, sizeof(Router::$routes));
 
         $router->addRoute('test2', 'Test2Controller');
-        $this->assertEqual(array('test'=>'TestController', 'test2'=>'Test2Controller'), Router::$routes);
+        $this->assertEqual(array('test'=>'IsoscelesExampleController', 'test2'=>'Test2Controller'), Router::$routes);
         $this->assertEqual(2, sizeof(Router::$routes));
     }
 
     public function testRouteNoParameters() {
         $router = new Router();
-        $router->addRoute('test', 'TestController');
-        $router->addRoute('index', 'TestController');
+        $router->addRoute('test', 'IsoscelesExampleController');
+        $router->addRoute('index', 'IsoscelesExampleController');
 
         $_SERVER['REQUEST_URI'] = "/";
         $results = $router->route(true);
@@ -50,7 +50,7 @@ class TestOfRouter extends IsoscelesBasicUnitTestCase {
 
     public function testRouteWithParameters() {
         $router = new Router();
-        $router->addRoute('user', 'TestController', array('username', 'network'));
+        $router->addRoute('user', 'IsoscelesExampleController', array('username', 'network'));
 
         $_SERVER['REQUEST_URI'] = "/user/twitter/username";
         $results = $router->route(true);

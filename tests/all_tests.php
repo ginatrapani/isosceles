@@ -44,7 +44,7 @@ $test_suite->add(new TestOfFileDataManager());
 $test_suite->add(new TestOfLoader());
 $test_suite->add(new TestOfPDODAO());
 $test_suite->add(new TestOfProfiler());
-$test_suite->add(new TestOfTestController());
+$test_suite->add(new TestOfIsoscelesExampleController());
 $test_suite->add(new TestOfUtils());
 $test_suite->add(new TestOfViewManager());
 

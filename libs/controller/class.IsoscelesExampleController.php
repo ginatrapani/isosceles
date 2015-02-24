@@ -15,14 +15,14 @@
  * You should have received a copy of the GNU General Public License along with ThinkUp.  If not, see
  * <http://www.gnu.org/licenses/>.
  *
- * Test Controller
+ * Example Controller
  *
- * Test controller to try the Controller abstract class.
+ * Example controller to demonstrate an implementation of the Controller abstract class.
  *
  * @license http://www.gnu.org/licenses/gpl.html
  */
 
-class TestController extends Controller {
+class IsoscelesExampleController extends Controller {
 
     public function control() {
         if (isset($_GET['json'])) {
@@ -34,12 +34,12 @@ class TestController extends Controller {
             $this->setContentType('image/png');
         } else if (isset($_GET['css'])) {
             $this->addHeaderCSS('assets/css/bla.css');
-            $this->setViewTemplate('isosceles.testcontroller.tpl');
+            $this->setViewTemplate('isosceles-example-controller.tpl');
         }
         if (isset($_GET['throwexception'])) {
             throw new Exception("Testing exception handling!");
         } else if (!isset($_GET['json']) && !isset($_GET['css'])) {
-            $this->setViewTemplate('isosceles.testcontroller.tpl');
+            $this->setViewTemplate('isosceles-example-controller.tpl');
         }
         $this->addToView('test', 'Testing, testing, 123');
         if (isset($_GET['username'])) {
