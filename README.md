@@ -63,7 +63,7 @@ Use the code editor and git client of your choice on your host machine. Edit fil
 SSH in and run the tests
 
     [host]  $ vagrant ssh
-    [guest] $ cd /var/www/; sudo php tests/all_tests.php
+    [guest] $ cd /var/www/; sudo phpunit tests
 
 ### Tools
 
