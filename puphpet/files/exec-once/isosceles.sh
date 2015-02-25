@@ -1,5 +1,5 @@
 # Install PHPUnit
-sudo apt-get install phpunit
+apt-get -q -y install phpunit
 
 # Copy Isosceles config files
 cp /var/www/puphpet/files/isosceles-setup/configs/config.inc.php /var/www/libs/config.inc.php
