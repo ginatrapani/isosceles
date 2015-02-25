@@ -222,7 +222,7 @@ mysql:
             host: localhost
             user: isosceles
             password: nice2bnice
-            sql_file: /var/www/install/sql/build-db_mysql.sql
+            sql_file: ''
         QVM21t5ZwMH3:
             grant:
                 - ALL

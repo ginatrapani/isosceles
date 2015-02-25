@@ -61,7 +61,7 @@ class IsoscelesUnitTestCase extends IsoscelesBasicUnitTestCase {
         $this->table_prefix = $config->getValue('table_prefix');
         PDODAO::$prefix = $this->table_prefix;
 
-        $this->testdb_helper->create(ISOSCELES_PATH."install/sql/build-db_mysql.sql");
+        $this->testdb_helper->create(ISOSCELES_PATH."tests/setup/build-db_mysql.sql");
     }
 
     /**
