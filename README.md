@@ -17,10 +17,10 @@ nowhere near done. Its current feature set includes:
 * [Data Access Object](http://en.wikipedia.org/wiki/Data_access_object)-based data layer using
 [PDO](http://us.php.net/manual/en/book.pdo.php)
 * Dynamic configuration through single config file
-* Caching to disk (via [Smarty](http://smarty.net))
+* Caching to disk (via [Smarty](http://smarty.net)) (included)
 * URL routing
 * A simple database query profiler
-* Testing framework (using [SimpleTest](http://www.simpletest.org/)) with Travis CI hooks
+* Test suite using [PHPUnit](https://phpunit.de/) with Travis CI hooks
 
 Isosceles is in beta and incomplete. In future releases it will get more features which demonstrate its use, like user
 registration, login, application settings, and logging.
@@ -29,13 +29,6 @@ registration, login, application settings, and logging.
 
 Isosceles' source code is licensed under the [GNU General Public License](http://www.gnu.org/licenses/gpl.html), except
 for the external libraries listed below.
-
-## External libraries
-
-The following libraries are included in Isosceles:
-
-* [SimpleTest](http://www.simpletest.org/)
-* [Smarty](http://smarty.net)
 
 ## Develop Locally via Vagrant Virtual Machine
 
