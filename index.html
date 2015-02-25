@@ -4,28 +4,40 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
     <title>Isosceles by ginatrapani</title>
-
     <link rel="stylesheet" href="stylesheets/styles.css">
     <link rel="stylesheet" href="stylesheets/pygment_trac.css">
-    <script src="javascripts/scale.fix.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script src="javascripts/main.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
 
-    <!--[if lt IE 9]>
-    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
   </head>
   <body>
-    <div class="wrapper">
+
       <header>
         <h1>Isosceles</h1>
         <p>Starter kit for building data-driven PHP5 web applications</p>
-        <p class="view"><a href="https://github.com/ginatrapani/isosceles">View the Project on GitHub <small>ginatrapani/isosceles</small></a></p>
-        <ul>
-          <li><a href="https://github.com/ginatrapani/isosceles/zipball/master">Download <strong>ZIP File</strong></a></li>
-          <li><a href="https://github.com/ginatrapani/isosceles/tarball/master">Download <strong>TAR Ball</strong></a></li>
-          <li><a href="https://github.com/ginatrapani/isosceles">View On <strong>GitHub</strong></a></li>
-        </ul>
       </header>
+
+      <div id="banner">
+        <span id="logo"></span>
+
+        <a href="https://github.com/ginatrapani/isosceles" class="button fork"><strong>View On GitHub</strong></a>
+        <div class="downloads">
+          <span>Downloads:</span>
+          <ul>
+            <li><a href="https://github.com/ginatrapani/isosceles/zipball/master" class="button">ZIP</a></li>
+            <li><a href="https://github.com/ginatrapani/isosceles/tarball/master" class="button">TAR</a></li>
+          </ul>
+        </div>
+      </div><!-- end banner -->
+
+    <div class="wrapper">
+      <nav>
+        <ul></ul>
+      </nav>
       <section>
         <h1>
 <a id="isosceles-starter-kit-for-php5-webapps-" class="anchor" href="#isosceles-starter-kit-for-php5-webapps-" aria-hidden="true"><span class="octicon octicon-link"></span></a>Isosceles: Starter kit for PHP5 webapps <a href="http://travis-ci.org/ginatrapani/isosceles"><img src="https://secure.travis-ci.org/ginatrapani/isosceles.png" alt="Build Status"></a>
@@ -33,7 +45,7 @@
 
 <p>Isosceles is an object-oriented, PHP5 web application starter kit based on <a href="https://thinkup.com/">ThinkUp</a>'s
 underpinnings. Isosceles provides a simple MVC framework, database agnosticism, caching, dynamic class loading,
-single-file configuration, URL routing and (eventually) common actions like user registration, login, and logging.</p>
+single-file configuration, URL routing and common actions like user signup, sign-in, and logging.</p>
 
 <p>Isosceles' name refers to the architecture of New York City's
 <a href="http://en.wikipedia.org/wiki/One_World_Trade_Center">One World Trade Center</a>.</p>
@@ -56,27 +68,13 @@ nowhere near done. Its current feature set includes:</p>
 <li>Caching to disk (via <a href="http://smarty.net">Smarty</a>)</li>
 <li>URL routing</li>
 <li>A simple database query profiler</li>
-<li>Testing framework (using <a href="http://www.simpletest.org/">SimpleTest</a>) with Travis CI hooks</li>
+<li>Test suite using <a href="https://phpunit.de/">PHPUnit</a> with Travis CI hooks</li>
 </ul>
-
-<p>Isosceles is in beta and incomplete. In future releases it will get more features which demonstrate its use, like user
-registration, login, application settings, and logging.</p>
 
 <h2>
 <a id="license" class="anchor" href="#license" aria-hidden="true"><span class="octicon octicon-link"></span></a>License</h2>
 
-<p>Isosceles' source code is licensed under the <a href="http://www.gnu.org/licenses/gpl.html">GNU General Public License</a>, except
-for the external libraries listed below.</p>
-
-<h2>
-<a id="external-libraries" class="anchor" href="#external-libraries" aria-hidden="true"><span class="octicon octicon-link"></span></a>External libraries</h2>
-
-<p>The following libraries are included in Isosceles:</p>
-
-<ul>
-<li><a href="http://www.simpletest.org/">SimpleTest</a></li>
-<li><a href="http://smarty.net">Smarty</a></li>
-</ul>
+<p>Isosceles' source code is licensed under the <a href="http://www.gnu.org/licenses/gpl.html">GNU General Public License</a>.</p>
 
 <h2>
 <a id="develop-locally-via-vagrant-virtual-machine" class="anchor" href="#develop-locally-via-vagrant-virtual-machine" aria-hidden="true"><span class="octicon octicon-link"></span></a>Develop Locally via Vagrant Virtual Machine</h2>
@@ -91,33 +89,21 @@ for the external libraries listed below.</p>
 </ul>
 
 <h3>
-<a id="install" class="anchor" href="#install" aria-hidden="true"><span class="octicon octicon-link"></span></a>Install</h3>
+<a id="set-up-development-environment" class="anchor" href="#set-up-development-environment" aria-hidden="true"><span class="octicon octicon-link"></span></a>Set up Development Environment</h3>
 
 <p>Clone the repository:</p>
 
 <pre><code>$ git clone git@github.com:ginatrapani/isosceles.git
+
+$ cd isosceles
 </code></pre>
-
-<p>Get required submodules:</p>
-
-<pre><code>$ cd isosceles; git submodule init; git submodule update --recursive
-</code></pre>
-
-<h3>
-<a id="run-development-environment" class="anchor" href="#run-development-environment" aria-hidden="true"><span class="octicon octicon-link"></span></a>Run Development Environment</h3>
 
 <p>Spin up virtual machine: (first run takes awhile)</p>
 
 <pre><code>$ vagrant up
 </code></pre>
 
-<p>All done? Congratulations!</p>
-
-<p>SSH in and run the tests</p>
-
-<pre><code>[host] $ vagrant ssh
-[guest] $ cd /var/www/; sudo php tests/all_tests.php
-</code></pre>
+<p>There is no step 3.</p>
 
 <h3>
 <a id="use" class="anchor" href="#use" aria-hidden="true"><span class="octicon octicon-link"></span></a>Use</h3>
@@ -135,6 +121,12 @@ for the external libraries listed below.</p>
 
 <p>Use the code editor and git client of your choice on your host machine. Edit files in the isosceles directory.</p>
 
+<p>SSH in and run the tests</p>
+
+<pre><code>[host]  $ vagrant ssh
+[guest] $ cd /var/www/; sudo phpunit tests
+</code></pre>
+
 <h3>
 <a id="tools" class="anchor" href="#tools" aria-hidden="true"><span class="octicon octicon-link"></span></a>Tools</h3>
 
@@ -151,11 +143,6 @@ for the external libraries listed below.</p>
 <li><a href="http://192.168.56.101:1080/">http://192.168.56.101:1080/</a></li>
 </ul>
 
-<p>SSH in:</p>
-
-<pre><code>$ vagrant ssh
-</code></pre>
-
 <p>Destroy virtual machine:</p>
 
 <pre><code>$ vagrant destroy
@@ -166,13 +153,13 @@ for the external libraries listed below.</p>
 <h3>
 <a id="modify" class="anchor" href="#modify" aria-hidden="true"><span class="octicon octicon-link"></span></a>Modify</h3>
 
-<p>This Vagrant virtual machine was built with <a href="http://puphpet.com">PuPHPet</a>. To modify it for your own purposes, drag and drop puphpet/config.yaml onto (<a href="http://puphpet.com">http://puphpet.com</a>) and regenerate.</p>
+<p>This Vagrant virtual machine was built with <a href="http://puphpet.com">PuPHPet</a>. To modify it for your own purposes, drag and drop <code>puphpet/config.yaml</code> onto (<a href="http://puphpet.com">http://puphpet.com</a>) in your web browser to regenerate.</p>
       </section>
+      <footer>
+        <p>Project maintained by <a href="https://github.com/ginatrapani">ginatrapani</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://twitter.com/michigangraham">mattgraham</a></small></p>
+      </footer>
     </div>
-    <footer>
-      <p>Project maintained by <a href="https://github.com/ginatrapani">ginatrapani</a></p>
-      <p>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></p>
-    </footer>
     <!--[if !IE]><script>fixScale(document);</script><![endif]-->
     
   </body>
