@@ -9,7 +9,7 @@
      </div>
     {/if}
     {if isset($error_msgs.$field)}
-     <div class="alert alert-error" role="alert">
+     <div class="alert alert-danger" role="alert">
            {if isset($error_msg_no_xss_filter)}
                {$error_msgs.$field}
            {else}
