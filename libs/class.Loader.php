@@ -73,7 +73,7 @@ class Loader {
 
         // set default lookup path for special classes
         self::$special_classes = array(
-        'Smarty' => ISOSCELES_PATH . 'extlibs/Smarty-3.1.21/libs/Smarty.class.php'
+        'Smarty' => ISOSCELES_PATH . 'libs/extlibs/Smarty-3.1.21/libs/Smarty.class.php'
         );
 
         if ( isset($additional_paths) && is_array($additional_paths)  ) {
