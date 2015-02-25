@@ -121,6 +121,18 @@ class Loader {
     }
 
     /**
+     * Add special class information for loading.
+     *
+     * @param str $class_name
+     * @param str $path full qualified path
+     */
+    public static function addSpecialClass($class_name, $path) {
+        self::definePathConstants();
+        self::$special_classes[$class_name] = $path;
+        require_once($path);
+    }
+
+    /**
      * The method registered to run on _autoload. When a class gets instantiated this method will be called to look up
      * the class file if the class is not present. The second instantiation of the same class wouldn't call this method.
      *
