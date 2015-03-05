@@ -98,5 +98,5 @@ if (isset($_SESSION["RD_MODE"]) || getenv("RD_MODE")=="1") {
 
 $ISOSCELES_CFG['custom_app_config']             = dirname(dirname(__FILE__)).'/www-example/config.inc.php';
 if (isset($ISOSCELES_CFG['custom_app_config']) && file_exists($ISOSCELES_CFG['custom_app_config'] )) {
-    require_once($ISOSCELES_CFG['custom_app_config']);
+    require($ISOSCELES_CFG['custom_app_config']);
 }
