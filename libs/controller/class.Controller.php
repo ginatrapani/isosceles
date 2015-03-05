@@ -61,19 +61,21 @@ abstract class Controller {
      * @var array
      */
     protected $json_data = null;
-
     /**
      *
      * @var str
      */
     protected $content_type = 'text/html; charset=UTF-8'; //default
-
     /**
      *
      * @var boolean if true we will pass a CSRF token to the view
      */
     protected $view_csrf_token = false; //default
-
+    /**
+     *
+     * @var boolean if true we will pass a CSRF token to the view
+     */
+    var $redirect_destination;
     /**
      * Constructs Controller
      *  @return Controller
