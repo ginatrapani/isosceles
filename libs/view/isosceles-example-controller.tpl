@@ -18,4 +18,9 @@
     <li><a href="{$site_root_path}?error=Uh-oh">Error message</a></li>
 </ul>
 
+<h2>Custom config values</h2>
+<ul>
+    <li>{$custom_config_1}</li>
+    <li>{$custom_config_2}</li>
+</ul>
 {include file="_isosceles.footer.tpl"}

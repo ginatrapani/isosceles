@@ -71,6 +71,13 @@ class IsoscelesExampleController extends Controller {
         if (isset($_GET['info'])) {
             $this->addInfoMessage($_GET['info']);
         }
+
+        //Demonstrate custom config values
+        $custom_config_1 = Config::getInstance()->getValue('my_custom_config_1');
+        $custom_config_2 = Config::getInstance()->getValue('my_custom_config_2');
+        $this->addToView('custom_config_1', $custom_config_1);
+        $this->addToView('custom_config_2', $custom_config_2);
+
         return $this->generateView();
     }
 }
