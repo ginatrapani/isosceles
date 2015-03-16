@@ -191,7 +191,7 @@ abstract class Controller {
         } else if (isset($this->json_data) ) {
             $this->setContentType('application/json');
             if ($this->view_mgr->isViewCached()) {
-                if ($this->view_mgr->is_cached('isosceles.json.tpl', $this->getCacheKeyString())) {
+                if ($this->view_mgr->isCached('isosceles.json.tpl', $this->getCacheKeyString())) {
                     return $this->view_mgr->fetch('isosceles.json.tpl', $this->getCacheKeyString());
                 } else {
                     $this->prepareJSON();
