@@ -40,12 +40,14 @@ class RouterTest extends IsoscelesBasicUnitTestCase {
     public function testAddRoute() {
         $router = new Router();
         $router->addRoute('test', 'IsoscelesExampleController');
-        $this->assertEquals(array('test'=>'IsoscelesExampleController'), Router::$routes);
-        $this->assertEquals(1, sizeof(Router::$routes));
+        $this->assertEquals(array('test'=>'IsoscelesExampleController', 404 => 'IsoscelesPageNotFoundController'),
+            Router::$routes);
+        $this->assertEquals(2, sizeof(Router::$routes));
 
         $router->addRoute('test2', 'Test2Controller');
-        $this->assertEquals(array('test'=>'IsoscelesExampleController', 'test2'=>'Test2Controller'), Router::$routes);
-        $this->assertEquals(2, sizeof(Router::$routes));
+        $this->assertEquals(array('test'=>'IsoscelesExampleController', 'test2'=>'Test2Controller',
+            404 => 'IsoscelesPageNotFoundController'), Router::$routes);
+        $this->assertEquals(3, sizeof(Router::$routes));
     }
 
     public function testRouteNoParameters() {
@@ -63,7 +65,7 @@ class RouterTest extends IsoscelesBasicUnitTestCase {
 
         $_SERVER['REQUEST_URI'] = "/nonexistent/user/ginatrapani";
         $results = $router->route(true);
-        $this->assertRegExp('/404 route not found: nonexistent/', $results);
+        $this->assertRegExp('/Four-oh-Four/', $results);
     }
 
     public function testRouteWithParameters() {
