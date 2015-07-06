@@ -64,7 +64,9 @@ class Router {
             }
             $controller = new self::$routes[$slug]($session_started);
         } else {
-            header($_SERVER["SERVER_PROTOCOL"]." 404 Not Found");
+            if (isset($_SERVER["SERVER_PROTOCOL"])) {
+                header($_SERVER["SERVER_PROTOCOL"]." 404 Not Found");
+            }
             $controller = new self::$routes['404']($session_started);
         }
         return $controller->go();
