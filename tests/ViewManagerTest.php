@@ -42,8 +42,9 @@ class ViewManagerTest extends PHPUnit_Framework_TestCase {
 
         $this->assertEquals(sizeof($v_mgr->template_dir), 2);
         $this->assertEquals($v_mgr->template_dir[1], '/path/to/isosceles/tests/view/');
-        $this->assertEquals(sizeof($v_mgr->plugins_dir), 2);
-        $this->assertEquals($v_mgr->plugins_dir[0], ISOSCELES_PATH.'libs/view/plugins/');
+        $this->assertEquals(sizeof($v_mgr->plugins_dir), 3);
+        $this->assertEquals($v_mgr->plugins_dir[0], ISOSCELES_PATH.'libs/extlibs/Smarty-3.1.21/libs/plugins/');
+        $this->assertEquals($v_mgr->plugins_dir[1], ISOSCELES_PATH.'libs/view/plugins/');
         $this->assertEquals($v_mgr->cache_dir, FileDataManager::getDataPath('compiled_view/cache/'));
         $this->assertEquals($v_mgr->cache_lifetime, $cfg->getValue('cache_lifetime'));
         $this->assertEquals($v_mgr->caching, 1);

@@ -96,6 +96,8 @@ class ViewManager extends Smarty {
         $this->template_dir = $template_dirs;
         $this->compile_dir = FileDataManager::getDataPath('compiled_view');
         $plugin_dirs = array();
+        //Enable Smarty's default modifiers and plugins
+        array_push($plugin_dirs,  ISOSCELES_PATH.'libs/extlibs/Smarty-3.1.21/libs/plugins');
         foreach ($template_dirs as $dir) {
             array_push($plugin_dirs, $dir.'/plugins');
         }

@@ -23,4 +23,7 @@
     <li>{$custom_config_1}</li>
     <li>{$custom_config_2}</li>
 </ul>
+
+<h3>Smarty modifier test - URL encoding</h3>
+<p>{'this should be URL encoded'|escape:'url'}
 {include file="_isosceles.footer.tpl"}
