@@ -160,8 +160,9 @@ abstract class PDODAO {
                 $exception_details .= 'Could not execute the following query: '.
                 str_replace(chr(10), "", $stmt->queryString) . '  PDOException: '. $e->getMessage();
             } else {
-                $exception_details .=
-                'To see the technical details of what went wrong, set debug = true in the config file.';
+                $exception_details .= 'Database error!';
+                error_log('Could not execute the following query: '.
+                    str_replace(chr(10), "", $stmt->queryString) . '  PDOException: '. $e->getMessage());
             }
             throw new PDOException ($exception_details);
         }
