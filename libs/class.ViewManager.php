@@ -262,7 +262,7 @@ class ViewManager extends Smarty {
             }
             return str_replace(array('#BASE_URL#', '#WHOAMI#', '#COMPILE_DIR#'),
             array('', $whoami, FileDataManager::getDataPath()),
-            file_get_contents(ISOSCELES_PATH.'libs/view/500-perm.html'));
+            file_get_contents(ISOSCELES_PATH.'libs/view/isosceles.500-perm.tpl'));
         }
     }
 
