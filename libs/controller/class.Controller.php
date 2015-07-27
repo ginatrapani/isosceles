@@ -325,8 +325,6 @@ abstract class Controller {
      * Invoke the controller
      *
      * Always use this method, not control(), to invoke the controller.
-     * @TODO show get 500 error template on Exception
-     * (if debugging is true, pass the exception details to the 500 template)
      */
     public function go() {
         try {
@@ -370,6 +368,9 @@ abstract class Controller {
             }
             $this->addToView('error_type', get_class($e));
             $this->addErrorMessage($e->getMessage());
+            if (isset($_SERVER["SERVER_PROTOCOL"])) {
+                header($_SERVER['SERVER_PROTOCOL'] . ' 500 Internal Server Error', true, 500);
+            }
             return $this->generateView();
         }
     }
