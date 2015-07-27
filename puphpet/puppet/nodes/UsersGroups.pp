@@ -1,19 +1,19 @@
-if $usersgroups_values == undef { $usersgroups_values = hiera_hash('users_groups', false) }
+class puphpet_usersgroups (
+  $users_groups
+) {
 
-Group <| |> -> User <| |>
+  Group <| |>
+  -> User <| |>
 
-if count($usersgroups_values['groups']) > 0 {
-  each( $usersgroups_values['groups'] ) |$key, $group| {
+  each( $users_groups['groups'] ) |$key, $group| {
     if ! defined(Group[$group]) {
       group { $group:
         ensure => present
       }
     }
   }
-}
 
-if count($usersgroups_values['users']) > 0 {
-  each( $usersgroups_values['users'] ) |$key, $user_group| {
+  each( $users_groups['users'] ) |$key, $user_group| {
     $ug_array = split($user_group, ':')
 
     $user = $ug_array[0]
@@ -34,12 +34,13 @@ if count($usersgroups_values['users']) > 0 {
 
     if ! defined(User[$user]) {
       user { $user:
+        ensure     => present,
         shell      => '/bin/bash',
         home       => "/home/${user}",
         managehome => true,
-        ensure     => present,
         groups     => $groups,
       }
     }
   }
+
 }

@@ -14,31 +14,31 @@ define postgresql::validate_db_connection(
   $tries             = 10,
   $create_db_first   = true
 ) {
-  require postgresql::client
+  include postgresql::client
   include postgresql::params
 
   $psql_path = $postgresql::params::psql_path
 
   $cmd_init = "${psql_path} --tuples-only --quiet "
   $cmd_host = $database_host ? {
+    undef   => '',
     default => "-h ${database_host} ",
-    undef   => "",
   }
   $cmd_user = $database_username ? {
+    undef   => '',
     default => "-U ${database_username} ",
-    undef   => "",
   }
   $cmd_port = $database_port ? {
+    undef   => '',
     default => "-p ${database_port} ",
-    undef   => "",
   }
   $cmd_dbname = $database_name ? {
-    default => "--dbname ${database_name} ",
     undef   => "--dbname ${postgresql::params::default_database} ",
+    default => "--dbname ${database_name} ",
   }
   $env = $database_password ? {
-    default => "PGPASSWORD=${database_password}",
     undef   => undef,
+    default => "PGPASSWORD=${database_password}",
   }
   $cmd = join([$cmd_init, $cmd_host, $cmd_user, $cmd_port, $cmd_dbname])
   $validate_cmd = "/usr/local/bin/validate_postgresql_connection.sh ${sleep} ${tries} '${cmd}'"
@@ -55,9 +55,9 @@ define postgresql::validate_db_connection(
     environment => $env,
     logoutput   => 'on_failure',
     user        => $run_as,
-    path        => '/bin',
+    path        => '/bin:/usr/bin:/usr/local/bin',
     timeout     => $timeout,
-    require     => Package['postgresql-client'],
+    require     => Class['postgresql::client'],
   }
 
   # This is a little bit of puppet magic.  What we want to do here is make

@@ -38,7 +38,7 @@ $ISOSCELES_CFG['rss_crawler_refresh_rate']  = 20;
 
 $ISOSCELES_CFG['db_host']                   = 'localhost'; //On a shared host? Try mysql.yourdomain.com, or see your web host's documentation.
 $ISOSCELES_CFG['db_type']                   = 'mysql';
-$ISOSCELES_CFG['db_user']                   = 'isosceles';
+$ISOSCELES_CFG['db_user']                   = 'isosceles_web';
 $ISOSCELES_CFG['db_password']               = 'nice2bnice';
 $ISOSCELES_CFG['db_name']                   = 'isosceles_web';
 $ISOSCELES_CFG['db_socket']                 = '';
@@ -80,8 +80,8 @@ if ((isset($_SESSION["MODE"]) && $_SESSION["MODE"] == "TESTS") && ! isset($_SESS
 || (getenv("MODE")=="TESTS" && ! getenv("RD_MODE")=="1")) {
     // Full server path to /isosceles/ source code folder.
     //$ISOSCELES_CFG['source_root_path']          = '/your-server-path-to/isosceles/';
-    //$ISOSCELES_CFG['db_user']                   = 'your_test_database_username';
-    //$ISOSCELES_CFG['db_password']               = 'your_test_database_password';
+    $ISOSCELES_CFG['db_user']                   = 'isosceles_tests';
+    $ISOSCELES_CFG['db_password']               = 'nice2bnice';
     $ISOSCELES_CFG['datadir_path']              = '/home/vagrant/data/tests/';
     $ISOSCELES_CFG['db_name']                   = 'isosceles_tests';
     ini_set('error_reporting', E_STRICT);
@@ -92,4 +92,9 @@ if (isset($_SESSION["RD_MODE"]) || getenv("RD_MODE")=="1") {
     $ISOSCELES_CFG['db_user']                   = 'your_ram_disk_test_database_username';
     $ISOSCELES_CFG['db_password']               = 'your_ram_disk_test_database_password';
     $ISOSCELES_CFG['db_name']                   = $ISOSCELES_CFG['db_name'] . '_rd';
+}
+
+$ISOSCELES_CFG['custom_app_config']             = dirname(dirname(__FILE__)).'/www-example/config.inc.php';
+if (isset($ISOSCELES_CFG['custom_app_config']) && file_exists($ISOSCELES_CFG['custom_app_config'] )) {
+    require($ISOSCELES_CFG['custom_app_config']);
 }

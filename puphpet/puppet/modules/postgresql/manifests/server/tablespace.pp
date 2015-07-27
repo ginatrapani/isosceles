@@ -6,12 +6,14 @@ define postgresql::server::tablespace(
 ) {
   $user      = $postgresql::server::user
   $group     = $postgresql::server::group
+  $port      = $postgresql::server::port
   $psql_path = $postgresql::server::psql_path
 
   Postgresql_psql {
     psql_user  => $user,
     psql_group => $group,
     psql_path  => $psql_path,
+    port       => $port,
   }
 
   if ($owner == undef) {
@@ -23,10 +25,14 @@ define postgresql::server::tablespace(
   $create_tablespace_command = "CREATE TABLESPACE \"${spcname}\" ${owner_section} LOCATION '${location}'"
 
   file { $location:
-    ensure => directory,
-    owner  => $user,
-    group  => $group,
-    mode   => '0700',
+    ensure  => directory,
+    owner   => $user,
+    group   => $group,
+    mode    => '0700',
+    seluser => 'system_u',
+    selrole => 'object_r',
+    seltype => 'postgresql_db_t',
+    require => Class['postgresql::server'],
   }
 
   $create_ts = "Create tablespace '${spcname}'"

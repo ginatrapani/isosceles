@@ -9,6 +9,7 @@ data/*
 .vagrant/*
 
 default/adminer/index.php
+html/adminer/index.php
 
 html/index.html
 

@@ -1,7 +1,7 @@
-<% if defined? @www_root -%>
+<% if defined? @www_root && @www_root.split.join.length > 0 -%>
     root  <%= @www_root %>;
 <% end -%>
-<% if @try_files -%>
+<% if (defined? @try_files) && @try_files.count > 0 -%>
     try_files<% @try_files.each do |try| -%> <%= try %><% end -%>;
 <% end -%>
 <% if defined? @autoindex -%>

@@ -13,6 +13,7 @@
     <%- end -%>
   <%- end -%>
 <% end -%>
+
 <% if @location_custom_cfg_append -%>
   <%- @location_custom_cfg_append.each do |key,value| -%>
     <%- if value.is_a?(Hash) -%>
@@ -21,13 +22,16 @@
     <%= key %> <%= subkey %> <%= asubvalue %>
         <%- end -%>
       <%- end -%>
-    <%- else -%>
+    <%- elsif value.is_a?(Array) -%>
       <%- Array(value).each do |asubvalue| -%>
     <%= key %> <%= asubvalue %>
       <%- end -%>
+    <%- elsif !key.nil? -%>
+    <%= key %>;
     <%- end -%>
   <%- end -%>
 <% end -%>
+
 <% if @raw_append && Array(@raw_append).size > 0 -%>
     <%- Array(@raw_append).each do |line| -%>
     <%= line %>

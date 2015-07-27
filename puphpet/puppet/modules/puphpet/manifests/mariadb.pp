@@ -7,8 +7,6 @@ class puphpet::mariadb(
   $release = $::lsbdistcodename,
   $arch    = $::architecture,
   $version = '10.0',
-  $url     = $puphpet::params::apache_mod_pagespeed_url,
-  $package = $puphpet::params::apache_mod_pagespeed_package
 ) {
 
   $arch_package_name = $::architecture ? {

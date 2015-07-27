@@ -200,6 +200,7 @@ define nginx::resource::vhost (
   $location_custom_cfg_prepend  = undef,
   $location_custom_cfg_append   = undef,
   $try_files              = undef,
+  $rewrite                = undef,
   $auth_basic             = undef,
   $auth_basic_user_file   = undef,
   $client_body_timeout    = undef,

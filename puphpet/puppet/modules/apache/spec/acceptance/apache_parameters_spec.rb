@@ -11,7 +11,7 @@ describe 'apache parameters', :unless => UNSUPPORTED_PLATFORMS.include?(fact('os
     end
 
     if fact('osfamily') == 'FreeBSD'
-      describe file("#{confd_dir}/no-accf.conf.erb") do
+      describe file("#{$confd_dir}/no-accf.conf.erb") do
         it { is_expected.not_to be_file }
       end
     end
@@ -46,6 +46,7 @@ describe 'apache parameters', :unless => UNSUPPORTED_PLATFORMS.include?(fact('os
       pp = <<-EOS
         class { 'apache':
           service_enable => true,
+          service_manage => true,
           service_ensure => running,
         }
       EOS
@@ -75,14 +76,31 @@ describe 'apache parameters', :unless => UNSUPPORTED_PLATFORMS.include?(fact('os
     end
   end
 
+  describe 'service manage => false' do
+    it 'we dont manage the service, so it shouldnt start the service' do
+      pp = <<-EOS
+        class { 'apache':
+          service_enable => true,
+          service_manage => false,
+          service_ensure => true,
+        }
+      EOS
+      apply_manifest(pp, :catch_failures => true)
+    end
+
+    describe service($service_name) do
+      it { is_expected.not_to be_running }
+      it { is_expected.not_to be_enabled }
+    end
+  end
+
   describe 'purge parameters => false' do
     it 'applies cleanly' do
       pp = <<-EOS
         class { 'apache':
           purge_configs   => false,
-          purge_vdir      => false,
           purge_vhost_dir => false,
-          vhost_dir       => "#{confd_dir}.vhosts"
+          vhost_dir       => "#{$confd_dir}.vhosts"
         }
       EOS
       shell("touch #{$confd_dir}/test.conf")
@@ -105,9 +123,8 @@ describe 'apache parameters', :unless => UNSUPPORTED_PLATFORMS.include?(fact('os
         pp = <<-EOS
           class { 'apache':
             purge_configs   => true,
-            purge_vdir      => true,
             purge_vhost_dir => true,
-            vhost_dir       => "#{confd_dir}.vhosts"
+            vhost_dir       => "#{$confd_dir}.vhosts"
           }
         EOS
         shell("touch #{$confd_dir}/test.conf")
@@ -202,7 +219,7 @@ describe 'apache parameters', :unless => UNSUPPORTED_PLATFORMS.include?(fact('os
       end
     end
 
-    describe file("#{$confd_dir}/mime.conf") do
+    describe file("#{$mod_dir}/mime.conf") do
       it { is_expected.to be_file }
       it { is_expected.to contain 'AddLanguage eo .eo' }
     end
@@ -225,7 +242,7 @@ describe 'apache parameters', :unless => UNSUPPORTED_PLATFORMS.include?(fact('os
   describe 'confd_dir' do
     describe 'setup' do
       it 'applies cleanly' do
-        pp = "class { 'apache': confd_dir => '/tmp/root', service_ensure => stopped }"
+        pp = "class { 'apache': confd_dir => '/tmp/root', service_ensure => stopped, use_optional_includes => true }"
         apply_manifest(pp, :catch_failures => true)
       end
     end
@@ -341,7 +358,7 @@ describe 'apache parameters', :unless => UNSUPPORTED_PLATFORMS.include?(fact('os
     describe 'setup' do
       it 'applies cleanly' do
         pp = <<-EOS
-          if $::osfamily == 'RedHat' and $::selinux == 'true' {
+          if $::osfamily == 'RedHat' and $::selinux {
             $semanage_package = $::operatingsystemmajrelease ? {
               '5'     => 'policycoreutils',
               default => 'policycoreutils-python',

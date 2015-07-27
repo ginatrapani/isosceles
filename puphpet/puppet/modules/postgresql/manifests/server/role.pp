@@ -3,8 +3,10 @@ define postgresql::server::role(
   $password_hash    = false,
   $createdb         = false,
   $createrole       = false,
-  $db               = $postgresql::server::user,
+  $db               = $postgresql::server::default_database,
+  $port             = $postgresql::server::port,
   $login            = true,
+  $inherit          = true,
   $superuser        = false,
   $replication      = false,
   $connection_limit = '-1',
@@ -13,9 +15,10 @@ define postgresql::server::role(
   $psql_user  = $postgresql::server::user
   $psql_group = $postgresql::server::group
   $psql_path  = $postgresql::server::psql_path
-  $version    = $postgresql::server::version
+  $version    = $postgresql::server::_version
 
   $login_sql       = $login       ? { true => 'LOGIN',       default => 'NOLOGIN' }
+  $inherit_sql     = $inherit     ? { true => 'INHERIT',     default => 'NOINHERIT' }
   $createrole_sql  = $createrole  ? { true => 'CREATEROLE',  default => 'NOCREATEROLE' }
   $createdb_sql    = $createdb    ? { true => 'CREATEDB',    default => 'NOCREATEDB' }
   $superuser_sql   = $superuser   ? { true => 'SUPERUSER',   default => 'NOSUPERUSER' }
@@ -28,6 +31,7 @@ define postgresql::server::role(
 
   Postgresql_psql {
     db         => $db,
+    port       => $port,
     psql_user  => $psql_user,
     psql_group => $psql_group,
     psql_path  => $psql_path,
@@ -53,6 +57,10 @@ define postgresql::server::role(
 
   postgresql_psql {"ALTER ROLE \"${username}\" ${login_sql}":
     unless => "SELECT rolname FROM pg_roles WHERE rolname='${username}' and rolcanlogin=${login}",
+  }
+
+  postgresql_psql {"ALTER ROLE \"${username}\" ${inherit_sql}":
+    unless => "SELECT rolname FROM pg_roles WHERE rolname='${username}' and rolinherit=${inherit}",
   }
 
   if(versioncmp($version, '9.1') >= 0) {

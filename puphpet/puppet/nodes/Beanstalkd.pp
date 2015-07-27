@@ -1,49 +1,39 @@
-if $beanstalkd_values == undef { $beanstalkd_values = hiera_hash('beanstalkd', false) }
-if $php_values == undef { $php_values = hiera_hash('php', false) }
-if $hhvm_values == undef { $hhvm_values = hiera_hash('hhvm', false) }
-if $apache_values == undef { $apache_values = hiera_hash('apache', false) }
-if $nginx_values == undef { $nginx_values = hiera_hash('nginx', false) }
+class puphpet_beanstalkd (
+  $beanstalkd,
+  $apache,
+  $hhvm,
+  $nginx,
+  $php
+) {
 
-include puphpet::params
+  include ::puphpet::apache::params
 
-if hash_key_equals($apache_values, 'install', 1) {
-  $beanstalk_console_webroot_location = '/var/www/default/beanstalk_console'
-} elsif hash_key_equals($nginx_values, 'install', 1) {
-  $beanstalk_console_webroot_location = "${puphpet::params::nginx_webroot_location}/beanstalk_console"
-} else {
-  $beanstalk_console_webroot_location = undef
-}
+  # beanstalk_console requires Apache or Nginx
+  if array_true($apache, 'install') {
+    $webroot = "${puphpet::apache::params::default_vhost_dir}/beanstalk_console"
+  } elsif array_true($nginx, 'install') {
+    $webroot = "${puphpet::params::nginx_webroot_location}/beanstalk_console"
+  } else {
+    $webroot = false
+  }
 
-if hash_key_equals($php_values, 'install', 1) or hash_key_equals($hhvm_values, 'install', 1) {
-  $beanstalkd_php_installed = true
-} else {
-  $beanstalkd_php_installed = false
-}
+  # beanstalk_console requires PHP engine
+  if array_true($php, 'install') or array_true($hhvm, 'install') {
+    $php_installed = true
+  } else {
+    $php_installed = false
+  }
 
-if hash_key_equals($beanstalkd_values, 'install', 1) {
-  create_resources(beanstalkd::config, { 'beanstalkd' => $beanstalkd_values['settings'] })
+  create_resources(beanstalkd::config, {
+    'beanstalkd' => $beanstalkd['settings'],
+  })
 
-  if hash_key_equals($beanstalkd_values, 'beanstalk_console', 1)
-    and $beanstalk_console_webroot_location != undef
-    and $beanstalkd_php_installed
-  {
-    exec { 'delete-beanstalk_console-path-if-not-git-repo':
-      command => "rm -rf ${beanstalk_console_webroot_location}",
-      onlyif  => "test ! -d ${beanstalk_console_webroot_location}/.git"
-    }
+  $console_prerequisites = ($webroot and $php_installed)
 
-    vcsrepo { $beanstalk_console_webroot_location:
-      ensure   => present,
-      provider => git,
-      source   => 'https://github.com/ptrofimov/beanstalk_console.git',
-      require  => Exec['delete-beanstalk_console-path-if-not-git-repo']
-    }
-
-    file { "${beanstalk_console_webroot_location}/storage.json":
-      ensure  => present,
-      group   => 'www-data',
-      mode    => 0775,
-      require => Vcsrepo[$beanstalk_console_webroot_location]
+  if array_true($beanstalkd, 'beanstalk_console') and $console_prerequisites {
+    class { 'puphpet::beanstalkd::console' :
+      install_location => $webroot
     }
   }
+
 }

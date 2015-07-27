@@ -8,8 +8,8 @@
     * [Beginning with the java module](#beginning-with-the-java-module)
 4. [Usage - Configuration options and additional functionality](#usage)
 5. [Reference - An under-the-hood peek at what the module is doing and how](#reference)
-5. [Limitations - OS compatibility, etc.](#limitations)
-6. [Development - Guide for contributing to the module](#development)
+6. [Limitations - OS compatibility, etc.](#limitations)
+7. [Development - Guide for contributing to the module](#development)
 
 ##Overview
 
@@ -46,7 +46,7 @@ class { 'java':
 
 * `java::params`: Builds a hash of jdk/jre packages for all compatible operating systems. 
 
-* `java::config`: Configures the Java alternatives on Debian systems.
+* `java::config`: Configures the Java alternatives.
 
 ###Parameters:
 
@@ -58,9 +58,19 @@ The following parameters are available in the java module:
 
 * `package`: The name of the Java package. This is configurable in case you want to install a non-standard Java package. If not set, the module will install the appropriate package for the `distribution` parameter and target platform. If you set `package`, the `distribution` parameter will do nothing. 
 
-* `java_alternative`: The name of the Java alternative to use on Debian systems. The command 'update-java-alternatives -l' will show which choices are available. If you specify a particular package, you will usually want to specify which Java alternative to use. If you set this parameter, you also need to set the `java_alternative_path`.
+* `java_alternative`: The name of the Java alternative to use. The command 'update-java-alternatives -l' will show which choices are available. If you specify a particular package, you will usually want to specify which Java alternative to use. If you set this parameter, you also need to set the `java_alternative_path`.
 
-* `java_alternative_path`: The path to the 'java' command on Debian systems. Since the alternatives system makes it difficult to verify which alternative is actually enabled, this is required to ensure the correct JVM is enabled.
+* `java_alternative_path`: The path to the 'java' command. Since the alternatives system makes it difficult to verify which alternative is actually enabled, this is required to ensure the correct JVM is enabled.
+
+###Facts
+
+The java module includes a few facts to describe the version of Java installed on the system:
+
+* `java_major_version`: The major version of Java.
+* `java_patch_level`: The patch level of Java.
+* `java_version`: The full Java version string.
+
+**Note:** The facts return `nil` if Java is not installed on the system.
 
 ##Limitations
 

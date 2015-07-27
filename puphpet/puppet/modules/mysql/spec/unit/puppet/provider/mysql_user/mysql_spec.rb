@@ -37,7 +37,7 @@ usvn_user@localhost
     Puppet::Util.stubs(:which).with('mysql').returns('/usr/bin/mysql')
     File.stubs(:file?).with('/root/.my.cnf').returns(true)
     provider.class.stubs(:mysql).with([defaults_file, '-NBe', "SELECT CONCAT(User, '@',Host) AS User FROM mysql.user"]).returns('joe@localhost')
-    provider.class.stubs(:mysql).with([defaults_file, '-NBe', "SELECT MAX_USER_CONNECTIONS, MAX_CONNECTIONS, MAX_QUESTIONS, MAX_UPDATES, PASSWORD FROM mysql.user WHERE CONCAT(user, '@', host) = 'joe@localhost'"]).returns('10 10 10 10 *6C8989366EAF75BB670AD8EA7A7FC1176A95CEF4')
+    provider.class.stubs(:mysql).with([defaults_file, '-NBe', "SELECT MAX_USER_CONNECTIONS, MAX_CONNECTIONS, MAX_QUESTIONS, MAX_UPDATES, PASSWORD /*!50508 , PLUGIN */ FROM mysql.user WHERE CONCAT(user, '@', host) = 'joe@localhost'"]).returns('10 10 10 10 *6C8989366EAF75BB670AD8EA7A7FC1176A95CEF4')
   end
 
   let(:instance) { provider.class.instances.first }
@@ -46,11 +46,11 @@ usvn_user@localhost
     it 'returns an array of users' do
       provider.class.stubs(:mysql).with([defaults_file, '-NBe', "SELECT CONCAT(User, '@',Host) AS User FROM mysql.user"]).returns(raw_users)
       parsed_users.each do |user|
-        provider.class.stubs(:mysql).with([defaults_file, '-NBe', "SELECT MAX_USER_CONNECTIONS, MAX_CONNECTIONS, MAX_QUESTIONS, MAX_UPDATES, PASSWORD FROM mysql.user WHERE CONCAT(user, '@', host) = '#{user}'"]).returns('10 10 10 10 ')
+        provider.class.stubs(:mysql).with([defaults_file, '-NBe', "SELECT MAX_USER_CONNECTIONS, MAX_CONNECTIONS, MAX_QUESTIONS, MAX_UPDATES, PASSWORD /*!50508 , PLUGIN */ FROM mysql.user WHERE CONCAT(user, '@', host) = '#{user}'"]).returns('10 10 10 10 ')
       end
 
       usernames = provider.class.instances.collect {|x| x.name }
-      parsed_users.should match_array(usernames)
+      expect(parsed_users).to match_array(usernames)
     end
   end
 
@@ -63,9 +63,10 @@ usvn_user@localhost
 
   describe 'create' do
     it 'makes a user' do
-      provider.expects(:mysql).with([defaults_file, '-e', "GRANT USAGE ON *.* TO 'joe'@'localhost' IDENTIFIED BY PASSWORD '*6C8989366EAF75BB670AD8EA7A7FC1176A95CEF4' WITH MAX_USER_CONNECTIONS 10 MAX_CONNECTIONS_PER_HOUR 10 MAX_QUERIES_PER_HOUR 10 MAX_UPDATES_PER_HOUR 10"])
+      provider.expects(:mysql).with([defaults_file, '-e', "CREATE USER 'joe'@'localhost' IDENTIFIED BY PASSWORD '*6C8989366EAF75BB670AD8EA7A7FC1176A95CEF4'"])
+      provider.expects(:mysql).with([defaults_file, '-e', "GRANT USAGE ON *.* TO 'joe'@'localhost' WITH MAX_USER_CONNECTIONS 10 MAX_CONNECTIONS_PER_HOUR 10 MAX_QUERIES_PER_HOUR 10 MAX_UPDATES_PER_HOUR 10"])
       provider.expects(:exists?).returns(true)
-      provider.create.should be_true
+      expect(provider.create).to be_truthy
     end
   end
 
@@ -73,30 +74,30 @@ usvn_user@localhost
     it 'removes a user if present' do
       provider.expects(:mysql).with([defaults_file, '-e', "DROP USER 'joe'@'localhost'"])
       provider.expects(:exists?).returns(false)
-      provider.destroy.should be_true
+      expect(provider.destroy).to be_truthy
     end
   end
 
   describe 'exists?' do
     it 'checks if user exists' do
-      instance.exists?.should be_true
+      expect(instance.exists?).to be_truthy
     end
   end
 
   describe 'self.defaults_file' do
     it 'sets --defaults-extra-file' do
       File.stubs(:file?).with('/root/.my.cnf').returns(true)
-      provider.defaults_file.should eq '--defaults-extra-file=/root/.my.cnf'
+      expect(provider.defaults_file).to eq '--defaults-extra-file=/root/.my.cnf'
     end
     it 'fails if file missing' do
       File.expects(:file?).with('/root/.my.cnf').returns(false)
-      provider.defaults_file.should be_nil
+      expect(provider.defaults_file).to be_nil
     end
   end
 
   describe 'password_hash' do
     it 'returns a hash' do
-      instance.password_hash.should == '*6C8989366EAF75BB670AD8EA7A7FC1176A95CEF4'
+      expect(instance.password_hash).to eq('*6C8989366EAF75BB670AD8EA7A7FC1176A95CEF4')
     end
   end
 
@@ -114,7 +115,7 @@ usvn_user@localhost
 
     describe property do
       it "returns #{property}" do
-        instance.send("#{property}".to_sym).should == '10'
+        expect(instance.send("#{property}".to_sym)).to eq('10')
       end
     end
 

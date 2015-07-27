@@ -1,7 +1,15 @@
 class apache::mod::fcgid(
   $options = {},
 ) {
-  ::apache::mod { 'fcgid': }
+  if $::osfamily == 'RedHat' and $::operatingsystemmajrelease == '7' {
+    $loadfile_name = 'unixd_fcgid.load'
+  } else {
+    $loadfile_name = undef
+  }
+
+  ::apache::mod { 'fcgid':
+    loadfile_name => $loadfile_name
+  }
 
   # Template uses:
   # - $options
@@ -11,6 +19,6 @@ class apache::mod::fcgid(
     content => template('apache/mod/fcgid.conf.erb'),
     require => Exec["mkdir ${::apache::mod_dir}"],
     before  => File[$::apache::mod_dir],
-    notify  => Service['httpd'],
+    notify  => Class['apache::service'],
   }
 }

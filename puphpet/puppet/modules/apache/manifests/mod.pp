@@ -18,11 +18,10 @@ define apache::mod (
 
   # Determine if we have special lib
   $mod_libs = $::apache::params::mod_libs
-  $mod_lib = $mod_libs[$mod] # 2.6 compatibility hack
   if $lib {
     $_lib = $lib
-  } elsif $mod_lib {
-    $_lib = $mod_lib
+  } elsif has_key($mod_libs, $mod) { # 2.6 compatibility hack
+    $_lib = $mod_libs[$mod]
   } else {
     $_lib = "mod_${mod}.so"
   }
@@ -48,11 +47,10 @@ define apache::mod (
 
   # Determine if we have a package
   $mod_packages = $::apache::params::mod_packages
-  $mod_package = $mod_packages[$mod] # 2.6 compatibility hack
   if $package {
     $_package = $package
-  } elsif $mod_package {
-    $_package = $mod_package
+  } elsif has_key($mod_packages, $mod) { # 2.6 compatibility hack
+    $_package = $mod_packages[$mod]
   } else {
     $_package = undef
   }
@@ -64,10 +62,12 @@ define apache::mod (
     $package_before = $::osfamily ? {
       'freebsd' => [
         File[$_loadfile_name],
-        File["${::apache::params::conf_dir}/${::apache::params::conf_file}"]
+        File["${::apache::conf_dir}/${::apache::params::conf_file}"]
       ],
       default => File[$_loadfile_name],
     }
+    # if there are any packages, they should be installed before the associated conf file
+    Package[$_package] -> File<| title == "${mod}.conf" |>
     # $_package may be an array
     package { $_package:
       ensure  => $package_ensure,
@@ -76,7 +76,7 @@ define apache::mod (
     }
   }
 
-  file { "${_loadfile_name}":
+  file { $_loadfile_name:
     ensure  => file,
     path    => "${mod_dir}/${_loadfile_name}",
     owner   => 'root',
@@ -88,7 +88,7 @@ define apache::mod (
       Exec["mkdir ${mod_dir}"],
     ],
     before  => File[$mod_dir],
-    notify  => Service['httpd'],
+    notify  => Class['apache::service'],
   }
 
   if $::osfamily == 'Debian' {
@@ -105,7 +105,7 @@ define apache::mod (
         Exec["mkdir ${enable_dir}"],
       ],
       before  => File[$enable_dir],
-      notify  => Service['httpd'],
+      notify  => Class['apache::service'],
     }
     # Each module may have a .conf file as well, which should be
     # defined in the class apache::mod::module
@@ -123,7 +123,7 @@ define apache::mod (
           Exec["mkdir ${enable_dir}"],
         ],
         before  => File[$enable_dir],
-        notify  => Service['httpd'],
+        notify  => Class['apache::service'],
       }
     }
   }

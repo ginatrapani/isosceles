@@ -1,5 +1,5 @@
 class apache::mod::mime_magic (
-  $magic_file = "${::apache::params::conf_dir}/magic"
+  $magic_file = "${::apache::conf_dir}/magic"
 ) {
   apache::mod { 'mime_magic': }
   # Template uses $magic_file
@@ -9,6 +9,6 @@ class apache::mod::mime_magic (
     content => template('apache/mod/mime_magic.conf.erb'),
     require => Exec["mkdir ${::apache::mod_dir}"],
     before  => File[$::apache::mod_dir],
-    notify  => Service['httpd'],
+    notify  => Class['apache::service'],
   }
 }

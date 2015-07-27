@@ -1,7 +1,9 @@
 Puppet Module for Ruby Version Manager (RVM)
 ==============================================
 
-[![Build Status](https://maestro.maestrodev.com/api/v1/projects/24/compositions/324/badge/icon)](https://maestro.maestrodev.com/projects/24/compositions/324)
+[![Build Status](https://travis-ci.org/maestrodev/puppet-rvm.svg?branch=maestrodev)](https://travis-ci.org/maestrodev/puppet-rvm)
+[![Puppet Forge](https://img.shields.io/puppetforge/v/maestrodev/rvm.svg)](https://forge.puppetlabs.com/maestrodev/rvm)
+[![Puppet Forge](https://img.shields.io/puppetforge/f/maestrodev/rvm.svg)](https://forge.puppetlabs.com/maestrodev/rvm)
 
 This module handles installing system RVM (also known as multi-user installation
 as root) and using it to install rubies and gems.  Support for installing and
@@ -190,6 +192,12 @@ You can configure the ruby versions to be installed and the system users from hi
     rvm::system_users:
       - john
       - doe
+
+    rvm::rvm_gems:
+      'bundler':
+        name: 'bundler'
+        ruby_version: '1.9'
+        ensure: latest
 
 
 ## Building the module

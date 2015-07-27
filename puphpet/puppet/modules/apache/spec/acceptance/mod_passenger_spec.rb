@@ -6,7 +6,7 @@ describe 'apache::mod::passenger class', :unless => UNSUPPORTED_PLATFORMS.includ
     service_name = 'apache2'
     mod_dir = '/etc/apache2/mods-available/'
     conf_file = "#{mod_dir}passenger.conf"
-    load_file = "#{mod_dir}passenger.load"
+    load_file = "#{mod_dir}zpassenger.load"
 
     case fact('operatingsystem')
     when 'Ubuntu'
@@ -31,6 +31,10 @@ describe 'apache::mod::passenger class', :unless => UNSUPPORTED_PLATFORMS.includ
       when 'wheezy'
         passenger_root = '/usr'
         passenger_ruby = '/usr/bin/ruby'
+      when 'jessie'
+        passenger_root         = '/usr/lib/ruby/vendor_ruby/phusion_passenger/locations.ini'
+        passenger_ruby         = '/usr/bin/ruby'
+        passenger_default_ruby = '/usr/bin/ruby'
       else
         # This may or may not work on Debian releases other than the above
         passenger_root = '/usr'
@@ -45,7 +49,7 @@ describe 'apache::mod::passenger class', :unless => UNSUPPORTED_PLATFORMS.includ
     service_name = 'httpd'
     mod_dir = '/etc/httpd/conf.d/'
     conf_file = "#{mod_dir}passenger.conf"
-    load_file = "#{mod_dir}passenger.load"
+    load_file = "#{mod_dir}zpassenger.load"
     # sometimes installs as 3.0.12, sometimes as 3.0.19 - so just check for the stable part
     passenger_root = '/usr/lib/ruby/gems/1.8/gems/passenger-3.0.1'
     passenger_ruby = '/usr/bin/ruby'
@@ -124,6 +128,9 @@ describe 'apache::mod::passenger class', :unless => UNSUPPORTED_PLATFORMS.includ
           when 'wheezy'
             it { is_expected.to contain "PassengerRuby \"#{passenger_ruby}\"" }
             it { is_expected.not_to contain "/PassengerDefaultRuby/" }
+          when 'jessie'
+            it { is_expected.to contain "PassengerDefaultRuby \"#{passenger_ruby}\"" }
+            it { is_expected.not_to contain "/PassengerRuby/" }
           else
             # This may or may not work on Debian releases other than the above
             it { is_expected.to contain "PassengerRuby \"#{passenger_ruby}\"" }
@@ -137,14 +144,15 @@ describe 'apache::mod::passenger class', :unless => UNSUPPORTED_PLATFORMS.includ
       end
 
       it 'should output status via passenger-memory-stats' do
-        shell("sudo /usr/sbin/passenger-memory-stats") do |r|
+        shell("PATH=/usr/bin:$PATH /usr/sbin/passenger-memory-stats") do |r|
           expect(r.stdout).to match(/Apache processes/)
           expect(r.stdout).to match(/Nginx processes/)
           expect(r.stdout).to match(/Passenger processes/)
 
-          # passenger-memory-stats output on Ubuntu 14.04 does not contain
+          # passenger-memory-stats output on newer Debian/Ubuntu verions do not contain
           # these two lines
-          unless fact('operatingsystem') == 'Ubuntu' && fact('operatingsystemrelease') == '14.04'
+          unless ((fact('operatingsystem') == 'Ubuntu' && fact('operatingsystemrelease') == '14.04') or
+                 (fact('operatingsystem') == 'Debian' && fact('operatingsystemrelease') == '8.0'))
             expect(r.stdout).to match(/### Processes: [0-9]+/)
             expect(r.stdout).to match(/### Total private dirty RSS: [0-9\.]+ MB/)
           end
@@ -158,7 +166,7 @@ describe 'apache::mod::passenger class', :unless => UNSUPPORTED_PLATFORMS.includ
       unless fact('operatingsystem') == 'Ubuntu' && fact('operatingsystemrelease') == '12.04'
         it 'should output status via passenger-status' do
           # xml output not available on ubunutu <= 10.04, so sticking with default pool output
-          shell("/usr/sbin/passenger-status") do |r|
+          shell("PATH=/usr/bin:$PATH /usr/sbin/passenger-status") do |r|
             # spacing may vary
             expect(r.stdout).to match(/[\-]+ General information [\-]+/)
             if fact('operatingsystem') == 'Ubuntu' && fact('operatingsystemrelease') == '14.04'
@@ -191,7 +199,7 @@ describe 'apache::mod::passenger class', :unless => UNSUPPORTED_PLATFORMS.includ
     # no fedora 18 passenger package yet, and rhel5 packages only exist for ruby 1.8.5
     unless (fact('operatingsystem') == 'Fedora' and fact('operatingsystemrelease').to_f >= 18) or (fact('osfamily') == 'RedHat' and fact('operatingsystemmajrelease') == '5' and fact('rubyversion') != '1.8.5')
 
-      if fact('operatingsystem') == 'RedHat' and fact('operatingsystemmajrelease') == '7'
+      if fact('osfamily') == 'RedHat' and fact('operatingsystemmajrelease') == '7'
         pending('test passenger - RHEL7 packages don\'t exist')
       else
         context "default passenger config" do
@@ -262,7 +270,7 @@ describe 'apache::mod::passenger class', :unless => UNSUPPORTED_PLATFORMS.includ
           end
 
           it 'should output status via passenger-memory-stats' do
-            shell("sudo /usr/bin/passenger-memory-stats") do |r|
+            shell("/usr/bin/passenger-memory-stats", :pty => true) do |r|
               expect(r.stdout).to match(/Apache processes/)
               expect(r.stdout).to match(/Nginx processes/)
               expect(r.stdout).to match(/Passenger processes/)

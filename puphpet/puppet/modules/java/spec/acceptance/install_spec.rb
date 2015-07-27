@@ -35,7 +35,14 @@ describe "installing java", :unless => UNSUPPORTED_PLATFORMS.include?(fact('osfa
         }
       EOS
 
-      apply_manifest(pp, :catch_failures => true)
+      # With the version of java that ships with pe on debian wheezy, update-alternatives
+      # throws an error on the first run due to missing alternative for policytool. It still
+      # updates the alternatives for java
+      if fact('operatingsystem') == 'Debian' and fact('lsbdistcodename') == 'wheezy'
+        apply_manifest(pp)
+      else
+        apply_manifest(pp, :catch_failures => true)
+      end
       apply_manifest(pp, :catch_changes => true)
     end
   end
@@ -195,7 +202,7 @@ describe 'failure cases' do
   # C14717
   # C14719
   # C14725
-  it 'should fail on debian when passed fake java_alternative and path' do
+  it 'should fail on debian or RHEL when passed fake java_alternative and path' do
     pp = <<-EOS
       class { 'java':
         java_alternative      => 'whatever',
@@ -203,7 +210,7 @@ describe 'failure cases' do
       }
     EOS
 
-    if fact('osfamily') == 'Debian'
+    if fact('osfamily') == 'Debian' or fact('osfamily') == 'RedHat'
       apply_manifest(pp, :expect_failures => true)
     else
       apply_manifest(pp, :catch_failures => true)

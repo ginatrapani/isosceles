@@ -144,6 +144,7 @@ describe 'concat', :type => :define do
         should contain_exec("concat_#{title}").with({
           :alias   => "concat_#{fragdir}",
           :command => 'true',
+          :unless  => 'true',
           :path    => '/bin:/usr/bin',
         })
       end
@@ -307,10 +308,18 @@ describe 'concat', :type => :define do
     end
 
     context 'false' do
+      it_behaves_like 'concat', '/etc/foo.bar', { :backup => false }
+    end
+
+    context 'true' do
+      it_behaves_like 'concat', '/etc/foo.bar', { :backup => true }
+    end
+
+    context 'true' do
       let(:title) { '/etc/foo.bar' }
-      let(:params) {{ :backup => false }}
+      let(:params) {{ :backup => [] }}
       it 'should fail' do
-        expect { should }.to raise_error(Puppet::Error, /is not a string/)
+        expect { should }.to raise_error(Puppet::Error, /backup must be string or bool/)
       end
     end
   end # backup =>

@@ -8,61 +8,64 @@ describe 'postgresql::server', :type => :class do
       :operatingsystemrelease => '6.0',
       :concat_basedir => tmpfilename('server'),
       :kernel => 'Linux',
+      :id => 'root',
+      :path => '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin',
     }
   end
 
   describe 'with no parameters' do
-    it { should contain_class("postgresql::params") }
-    it { should contain_class("postgresql::server") }
+    it { is_expected.to contain_class("postgresql::params") }
+    it { is_expected.to contain_class("postgresql::server") }
+    it { is_expected.to contain_exec('postgresql_reload').with({
+      'command' => 'service postgresql reload',
+    })
+    }
     it 'should validate connection' do
-      should contain_postgresql__validate_db_connection('validate_service_is_running')
+      is_expected.to contain_postgresql__validate_db_connection('validate_service_is_running')
     end
   end
 
-  describe 'manage_firewall => true' do
-    let(:params) do
-      {
-        :manage_firewall => true,
-        :ensure => true,
-      }
-    end
-
-    it 'should create firewall rule' do
-      should contain_firewall("5432 accept - postgres")
+  describe 'service_ensure => running' do
+    let(:params) {{ :service_ensure => 'running' }}
+    it { is_expected.to contain_class("postgresql::params") }
+    it { is_expected.to contain_class("postgresql::server") }
+    it 'should validate connection' do
+      is_expected.to contain_postgresql__validate_db_connection('validate_service_is_running')
     end
   end
 
-  describe 'ensure => absent' do
-    let(:params) do
-      {
-        :ensure => 'absent',
-        :datadir => '/my/path',
-        :xlogdir => '/xlog/path',
-      }
+  describe 'service_ensure => stopped' do
+    let(:params) {{ :service_ensure => 'stopped' }}
+    it { is_expected.to contain_class("postgresql::params") }
+    it { is_expected.to contain_class("postgresql::server") }
+    it 'shouldnt validate connection' do
+      is_expected.not_to contain_postgresql__validate_db_connection('validate_service_is_running')
     end
+  end
 
-    it 'should make package purged' do
-      should contain_package('postgresql-server').with({
-        :ensure => 'purged',
-      })
+  describe 'service_reload => /bin/true' do
+    let(:params) {{ :service_reload => '/bin/true' }}
+    it { is_expected.to contain_class("postgresql::params") }
+    it { is_expected.to contain_class("postgresql::server") }
+    it { is_expected.to contain_exec('postgresql_reload').with({
+      'command' => '/bin/true',
+    })
+    }
+    it 'should validate connection' do
+      is_expected.to contain_postgresql__validate_db_connection('validate_service_is_running')
     end
+  end
 
-    it 'stop the service' do
-      should contain_service('postgresqld').with({
-        :ensure => false,
-      })
-    end
+  describe 'service_manage => true' do
+    let(:params) {{ :service_manage => true }}
+    it { is_expected.to contain_service('postgresqld') }
+  end
 
-    it 'should remove datadir' do
-      should contain_file('/my/path').with({
-        :ensure => 'absent',
-      })
-    end
-
-    it 'should remove xlogdir' do
-      should contain_file('/xlog/path').with({
-        :ensure => 'absent',
-      })
+  describe 'service_manage => false' do
+    let(:params) {{ :service_manage => false }}
+    it { is_expected.not_to contain_service('postgresqld') }
+    it 'shouldnt validate connection' do
+      is_expected.not_to contain_postgresql__validate_db_connection('validate_service_is_running')
     end
   end
 
@@ -74,14 +77,14 @@ describe 'postgresql::server', :type => :class do
     end
 
     it 'should remove the package' do
-      should contain_package('postgresql-server').with({
+      is_expected.to contain_package('postgresql-server').with({
         :ensure => 'purged',
       })
     end
 
     it 'should still enable the service' do
-      should contain_service('postgresqld').with({
-        :ensure => true,
+      is_expected.to contain_service('postgresqld').with({
+        :ensure => 'running',
       })
     end
   end
@@ -94,7 +97,7 @@ describe 'postgresql::server', :type => :class do
     end
 
     it 'should contain proper initdb exec' do
-      should contain_exec('postgresql_initdb')
+      is_expected.to contain_exec('postgresql_initdb')
     end
   end
 end

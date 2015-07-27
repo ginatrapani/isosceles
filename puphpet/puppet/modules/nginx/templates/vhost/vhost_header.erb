@@ -13,6 +13,9 @@ server {
   listen [<%= @ipv6_listen_ip %>]:<%= @ipv6_listen_port %> <% if @ipv6_listen_options %><%= @ipv6_listen_options %><% end %>;
 <% end %>
   server_name           <%= @rewrite_www_to_non_www ? @server_name[0].gsub(/^www\./, '') : @server_name.join(" ") %>;
+<% if (defined? @rewrite) && (@rewrite.split.join.length > 0) -%>
+  rewrite <%= @rewrite %>;
+<% end -%>
 <% if defined? @auth_basic -%>
   auth_basic           "<%= @auth_basic %>";
 <% end -%>

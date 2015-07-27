@@ -13,10 +13,8 @@
 class java::params {
 
   case $::osfamily {
-    default: { fail("unsupported platform ${::osfamily}") }
     'RedHat': {
       case $::operatingsystem {
-        default: { fail("unsupported os ${::operatingsystem}") }
         'RedHat', 'CentOS', 'OracleLinux', 'Scientific': {
           if (versioncmp($::operatingsystemrelease, '5.0') < 0) {
             $jdk_package = 'java-1.6.0-sun-devel'
@@ -39,6 +37,7 @@ class java::params {
           $jdk_package = 'java-1.7.0-openjdk-devel'
           $jre_package = 'java-1.7.0-openjdk'
         }
+        default: { fail("unsupported os ${::operatingsystem}") }
       }
       $java = {
         'jdk' => { 'package' => $jdk_package, },
@@ -52,13 +51,13 @@ class java::params {
           $java  = {
             'jdk' => {
               'package'          => 'openjdk-6-jdk',
-              'alternative'      => "java-6-openjdk-${architecture}",
+              'alternative'      => "java-6-openjdk-${::architecture}",
               'alternative_path' => '/usr/lib/jvm/java-6-openjdk/jre/bin/java',
               'java_home'        => '/usr/lib/jvm/java-6-openjdk/jre/',
             },
             'jre' => {
               'package'          => 'openjdk-6-jre-headless',
-              'alternative'      => "java-6-openjdk-${architecture}",
+              'alternative'      => "java-6-openjdk-${::architecture}",
               'alternative_path' => '/usr/lib/jvm/java-6-openjdk/jre/bin/java',
               'java_home'        => '/usr/lib/jvm/java-6-openjdk/jre/',
             },
@@ -76,7 +75,7 @@ class java::params {
             },
           }
         }
-        'wheezy', 'jessie', 'precise','quantal','raring','saucy', 'trusty': {
+        'wheezy', 'jessie', 'precise','quantal','raring','saucy', 'trusty', 'utopic': {
           $java =  {
             'jdk' => {
               'package'          => 'openjdk-7-jdk',
@@ -119,7 +118,7 @@ class java::params {
           $jre_package = 'java-1_6_0-ibm'
         }
 
-        "SLES": {
+        'SLES': {
           case $::operatingsystemmajrelease{
             default: {
               $jdk_package = 'java-1_6_0-ibm-devel'
@@ -142,5 +141,6 @@ class java::params {
         'jre' => { 'package' => $jre_package, },
       }
     }
+    default: { fail("unsupported platform ${::osfamily}") }
   }
 }

@@ -1,10 +1,10 @@
 # This depends on puppetlabs/apache: https://github.com/puppetlabs/puppetlabs-apache
 
 class puphpet::apache::modpagespeed (
-  $url     = $puphpet::params::apache_mod_pagespeed_url,
-  $package = $puphpet::params::apache_mod_pagespeed_package,
+  $url     = $puphpet::apache::params::mod_pagespeed_url,
+  $package = $puphpet::apache::params::mod_pagespeed_package,
   $ensure  = 'present'
-) {
+) inherits puphpet::apache::params {
 
   $download_location = $::osfamily ? {
     'Debian' => '/.puphpet-stuff/mod-pagespeed.deb',
@@ -13,7 +13,7 @@ class puphpet::apache::modpagespeed (
 
   $provider = $::osfamily ? {
     'Debian' => 'dpkg',
-    'Redhat' => 'yum'
+    'Redhat' => 'rpm'
   }
 
   exec { "download apache mod-pagespeed to ${download_location}":
@@ -40,12 +40,6 @@ class puphpet::apache::modpagespeed (
     }
   }
 
-  if ! defined(Apache::Mod['pagespeed']) {
-    apache::mod{ 'pagespeed':
-      require => Package[$package],
-    }
-  }
-
   $pagespeed_load = "${apache::params::mod_dir}/pagespeed.load"
 
   exec { 'mod_pagespeed httpd 2.4':
@@ -53,7 +47,6 @@ class puphpet::apache::modpagespeed (
     onlyif  => "test -f ${pagespeed_load}",
     unless  => "grep -x 'mod_pagespeed_ap24.so' ${pagespeed_load}",
     path    => [ '/bin/', '/sbin/', '/usr/bin/', '/usr/sbin/' ],
-    require => Apache::Mod['pagespeed'],
     notify  => Service['httpd']
   }
 

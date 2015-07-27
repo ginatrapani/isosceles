@@ -10,8 +10,10 @@ class apache::mod::prefork (
   if defined(Class['apache::mod::event']) {
     fail('May not include both apache::mod::prefork and apache::mod::event on the same node')
   }
-  if defined(Class['apache::mod::itk']) {
-    fail('May not include both apache::mod::prefork and apache::mod::itk on the same node')
+  if versioncmp($apache_version, '2.4') < 0 {
+    if defined(Class['apache::mod::itk']) {
+      fail('May not include both apache::mod::prefork and apache::mod::itk on the same node')
+    }
   }
   if defined(Class['apache::mod::peruser']) {
     fail('May not include both apache::mod::prefork and apache::mod::peruser on the same node')
@@ -37,7 +39,7 @@ class apache::mod::prefork (
     content => template('apache/mod/prefork.conf.erb'),
     require => Exec["mkdir ${::apache::mod_dir}"],
     before  => File[$::apache::mod_dir],
-    notify  => Service['httpd'],
+    notify  => Class['apache::service'],
   }
 
   case $::osfamily {
@@ -54,13 +56,18 @@ class apache::mod::prefork (
           line    => '#HTTPD=/usr/sbin/httpd.worker',
           match   => '#?HTTPD=/usr/sbin/httpd.worker',
           require => Package['httpd'],
-          notify  => Service['httpd'],
+          notify  => Class['apache::service'],
         }
       }
     }
     'debian', 'freebsd' : {
       ::apache::mpm{ 'prefork':
         apache_version => $apache_version,
+      }
+    }
+    'gentoo': {
+      ::portage::makeconf { 'apache2_mpms':
+        content => 'prefork',
       }
     }
     default: {

@@ -1,19 +1,16 @@
-if $rabbitmq_values == undef { $rabbitmq_values = hiera_hash('rabbitmq', false) }
-if $php_values == undef { $php_values = hiera_hash('php', false) }
-if $apache_values == undef { $apache_values = hiera_hash('apache', false) }
-if $nginx_values == undef { $nginx_values = hiera_hash('nginx', false) }
+class puphpet_rabbitmq (
+  $rabbitmq,
+  $apache,
+  $nginx,
+  $php
+) {
 
-include puphpet::params
+  if array_true($apache, 'install') or array_true($nginx, 'install') {
+    $webserver_restart = true
+  } else {
+    $webserver_restart = false
+  }
 
-if hash_key_equals($apache_values, 'install', 1)
-  or hash_key_equals($nginx_values, 'install', 1)
-{
-  $rabbitmq_webserver_restart = true
-} else {
-  $rabbitmq_webserver_restart = false
-}
-
-if hash_key_equals($rabbitmq_values, 'install', 1) {
   if $::osfamily == 'redhat' {
     Class['erlang']
     -> Class['rabbitmq']
@@ -21,22 +18,72 @@ if hash_key_equals($rabbitmq_values, 'install', 1) {
     include erlang
   }
 
-  create_resources('class', { 'rabbitmq' => $rabbitmq_values['settings'] })
+  $settings = merge({'delete_guest_user' => true,}, $rabbitmq['settings'])
 
-  if hash_key_equals($php_values, 'install', 1)
-    and ! defined(Puphpet::Php::Pecl['amqp'])
-  {
+  create_resources('class', { 'rabbitmq' => $settings })
+
+  each( $rabbitmq['plugins'] ) |$plugin| {
+    rabbitmq_plugin { $plugin:
+      ensure => present,
+    }
+  }
+
+  # config file could contain no vhosts key
+  $vhosts = array_true($rabbitmq, 'vhosts') ? {
+    true    => $rabbitmq['vhosts'],
+    default => []
+  }
+
+  each( $vhosts ) |$vhost| {
+    rabbitmq_vhost { $vhost:
+      ensure => present,
+    }
+  }
+
+  # config file could contain no users key
+  $users = array_true($rabbitmq, 'users') ? {
+    true    => $rabbitmq['users'],
+    default => { }
+  }
+
+  each( $users ) |$key, $user| {
+    $username = $user['name']
+    $is_admin = array_true($user, 'admin') ? {
+      true    => true,
+      default => false
+    }
+
+    # config file could contain no user.permissions
+    $permissions = array_true($user, 'permissions') ? {
+      true    => $user['permissions'],
+      default => { }
+    }
+
+    $merged = delete(merge($user, {
+      'admin' => $is_admin
+    }), ['name', 'permissions'])
+
+    create_resources(rabbitmq_user, { "${username}" => $merged })
+
+    each($permissions) |$pkey, $permission| {
+      $host = $permission['host']
+      $permission_merged = delete($permission, 'host')
+
+      create_resources(rabbitmq_user_permissions, {
+        "${username}@${host}" => $permission_merged
+      })
+    }
+  }
+
+  if array_true($php, 'install') and ! defined(Puphpet::Php::Pecl['amqp']) {
     puphpet::php::pecl { 'amqp':
-      service_autorestart => $rabbitmq_webserver_restart,
+      service_autorestart => $webserver_restart,
       require             => Package['rabbitmq-server']
     }
   }
 
-  if ! defined(Firewall['100 tcp/15672']) {
-    firewall { '100 tcp/15672':
-      port   => 15672,
-      proto  => tcp,
-      action => 'accept',
-    }
+  if ! defined(Puphpet::Firewall::Port[$settings['port']]) {
+    puphpet::firewall::port { $settings['port']: }
   }
+
 }

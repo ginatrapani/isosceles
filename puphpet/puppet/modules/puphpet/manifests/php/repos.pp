@@ -16,7 +16,7 @@ class puphpet::php::repos (
           repos             => 'all',
           required_packages => 'debian-keyring debian-archive-keyring',
           key               => '89DF5277',
-          key_server        => 'hkp://keyserver.ubuntu.com:80',
+          key_server        => 'keys.gnupg.net',
           include_src       => true
         }
       }
@@ -28,7 +28,7 @@ class puphpet::php::repos (
           repos             => 'all',
           required_packages => 'debian-keyring debian-archive-keyring',
           key               => '89DF5277',
-          key_server        => 'hkp://keyserver.ubuntu.com:80',
+          key_server        => 'keys.gnupg.net',
           include_src       => true
         }
       }
@@ -39,7 +39,7 @@ class puphpet::php::repos (
           repos             => 'all',
           required_packages => 'debian-keyring debian-archive-keyring',
           key               => '89DF5277',
-          key_server        => 'hkp://keyserver.ubuntu.com:80',
+          key_server        => 'keys.gnupg.net',
           include_src       => true
         }
       }

@@ -1,4 +1,4 @@
-# The Passanger Apache module configuration file is being
+# The Passenger Apache module configuration file is being
 # managed by Puppet and changes will be overwritten.
 <IfModule mod_passenger.c>
   <%- if @passenger_root -%>
@@ -15,6 +15,9 @@
   <%- end -%>
   <%- if @passenger_max_pool_size -%>
   PassengerMaxPoolSize <%= @passenger_max_pool_size %>
+  <%- end -%>
+  <%- if @passenger_min_instances -%>
+  PassengerMinInstances <%= @passenger_min_instances %>
   <%- end -%>
   <%- if @passenger_pool_idle_time -%>
   PassengerPoolIdleTime <%= @passenger_pool_idle_time %>
@@ -33,5 +36,8 @@
   <%- end -%>
   <%- if @passenger_use_global_queue -%>
   PassengerUseGlobalQueue <%= @passenger_use_global_queue %>
+  <%- end -%>
+  <%- if @passenger_app_env -%>
+  PassengerAppEnv <%= @passenger_app_env %>
   <%- end -%>
 </IfModule>

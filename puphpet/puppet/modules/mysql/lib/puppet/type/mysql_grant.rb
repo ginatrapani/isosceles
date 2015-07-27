@@ -4,6 +4,7 @@ Puppet::Type.newtype(:mysql_grant) do
   ensurable
 
   autorequire(:file) { '/root/.my.cnf' }
+  autorequire(:mysql_user) { self[:user] }
 
   def initialize(*args)
     super
@@ -17,13 +18,22 @@ Puppet::Type.newtype(:mysql_grant) do
     # Sort the privileges array in order to ensure the comparision in the provider
     # self.instances method match.  Otherwise this causes it to keep resetting the
     # privileges.
-    self[:privileges] = Array(self[:privileges]).map(&:upcase).uniq.reject{|k| k == 'GRANT' or k == 'GRANT OPTION'}.sort!
+    self[:privileges] = Array(self[:privileges]).map{ |priv|
+       # split and sort the column_privileges in the parentheses and rejoin
+       if priv.include?('(')
+         type, col=priv.strip.split(/\s+|\b/,2)
+         type.upcase + " (" + col.slice(1...-1).strip.split(/\s*,\s*/).sort.join(', ') + ")"
+       else
+         priv.strip.upcase
+       end
+     }.uniq.reject{|k| k == 'GRANT' or k == 'GRANT OPTION'}.sort!
   end
 
   validate do
     fail('privileges parameter is required.') if self[:ensure] == :present and self[:privileges].nil?
     fail('table parameter is required.') if self[:ensure] == :present and self[:table].nil?
     fail('user parameter is required.') if self[:ensure] == :present and self[:user].nil?
+    fail('name must match user and table parameters') if self[:name] != "#{self[:user]}/#{self[:table]}"
   end
 
   newparam(:name, :namevar => true) do
@@ -36,10 +46,6 @@ Puppet::Type.newtype(:mysql_grant) do
 
   newproperty(:privileges, :array_matching => :all) do
     desc 'Privileges for user'
-
-    munge do |value|
-      value.upcase
-    end
   end
 
   newproperty(:table) do
@@ -55,13 +61,24 @@ Puppet::Type.newtype(:mysql_grant) do
   newproperty(:user) do
     desc 'User to operate on.'
     validate do |value|
-      # https://dev.mysql.com/doc/refman/5.1/en/account-names.html
-      # Regex should problably be more like this: /^[`'"]?[^`'"]*[`'"]?@[`'"]?[\w%\.]+[`'"]?$/
-      raise(ArgumentError, "Invalid user #{value}") unless value =~ /[\w-]*@[\w%\.:]+/
-      username = value.split('@')[0]
-      if username.size > 16
-        raise ArgumentError, 'MySQL usernames are limited to a maximum of 16 characters'
+      # http://dev.mysql.com/doc/refman/5.5/en/identifiers.html
+      # If at least one special char is used, string must be quoted
+
+      # http://stackoverflow.com/questions/8055727/negating-a-backreference-in-regular-expressions/8057827#8057827
+      if matches = /^(['`"])((?!\1).)*\1@([\w%\.:\-]+)/.match(value)
+        user_part = matches[2]
+        host_part = matches[3]
+      elsif matches = /^([0-9a-zA-Z$_]*)@([\w%\.:\-]+)/.match(value)
+        user_part = matches[1]
+        host_part = matches[2]
+      elsif matches = /^((?!['`"]).*[^0-9a-zA-Z$_].*)@(.+)$/.match(value)
+        user_part = matches[1]
+        host_part = matches[2]
+      else
+        raise(ArgumentError, "Invalid database user #{value}")
       end
+
+      raise(ArgumentError, 'MySQL usernames are limited to a maximum of 16 characters') unless user_part.size <= 16
     end
   end
 

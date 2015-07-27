@@ -1,3 +1,151 @@
+##2015-03-10 - Supported Release 4.2.0
+###Summary
+
+This release has several new features including support for server extensions, improved grant support, and a number of bugfixes.
+
+####Features
+- Changes to support OpenBSD
+- Add `service_reload` parameter to `postgresql::server`
+- Add `comment` parameter to `postgresql::server::database` (MODULES-1153)
+- Add `postgresql::server::extension` defined type
+- Add postgresql versions for utopic and jessie
+- Update `postgresql::server::grant` to support 'GRANT SCHEMA' and 'ALL TABLES IN SCHEMA'
+
+####Bugfixes
+- Lint cleanup
+- Remove outdated upgrade info from README
+- Use correct TCP port when checking password
+- Create role before database
+- Fix template1 encoding on Debian
+- Require server package before user permissions
+- Fix `service_status` default for FreeBSD to allow PostgreSQL to start the first run
+- Fix invalid US-ASCII byte sequence in `postgresql::server::grant` comments
+- Reverted to default behavior for Debian systems as `pg_config` should not be overwritten (MODULES-1485)
+
+##2014-11-04 - Supported Release 4.1.0
+###Summary
+
+This release adds the ability to change the PGDATA directory, and also includes documentation and test updates, future parser support, and a few other new features.
+
+####Features
+- Future parser support
+- Documentation updates
+- Test updates
+- Add a link from `/etc/sysconfig/pgsql/postgresql-${version}` to `/etc/sysconfig/pgsql/postgresql` to support init scripts from the postgresql.org repo
+- Add support for changing the PGDATA directory
+- Set default versions for Fedora 21 and FreeBSD
+
+##2014-09-03 - Supported Release 4.0.0
+###Summary
+
+This release removes the uninstall ability from the module, removes the firewall
+management, overhauls all of the acceptance testing, as well as adds better
+support for SuSE and Fedora.
+
+###Backwards Incompatible changes.
+
+- Uninstall code removal.
+- Firewall management for Postgres.
+- Set manage_pg_ident_conf to true.
+
+####Uninstallation removal
+
+We rely heavily on the ability to uninstall and reinstall postgres throughout
+our testing code, testing features like "can I move from the distribution
+packages to the upstream packages through the module" and over time we've
+learnt that the uninstall code simply doesn't work a lot of the time.  It
+leaves traces of postgres behind or fails to remove certain packages on Ubuntu,
+and generally causes bits to be left on your system that you didn't expect.
+
+When we then reinstall things fail because it's not a true clean slate, and
+this causes us enormous problems during test.  We've spent weeks and months
+working on these tests and they simply don't hold up well across the full range
+of PE platforms.
+
+Due to all these problems we've decided to take a stance on uninstalling in
+general.  We feel that in 2014 it's completely reasonable and normal to have a
+good provisioning pipeline combined with your configuration management and the
+"correct" way to uninstall a fully installed service like postgresql is to
+simply reprovision the server without it in the first place.  As a general rule
+this is how I personally like to work and I think is a good practice.
+
+####I'm not OK with this!
+
+We understand that there are environments and situations in which it's not easy
+to do that.  What if you accidently deployed Postgres on 100,000 nodes?  In the
+future we're going to take a look at building some example 'profiles' to be
+found under examples/ within this module that can uninstall postgres on popular
+platforms.  These can be modified and used in your specific case to uninstall
+postgresql.  They will be much more brute force and reliant on deleting entire
+directories and require you to do more work up front in specifying where things
+are installed but we think it'll prove to be a much cleaner mechanism for this
+kind of thing rather than trying to weave it into the main module logic itself.
+
+####Features
+- Removal of uninstall.
+- Removal of firewall management.
+- Tests ported to rspec3.
+- Acceptance tests rewritten.
+- Add a defined type for creating database schemas.
+- Add a pg_ident_rule defined type.
+- Set manage_pg_ident_conf to true.
+- Manage pg_ident.conf by default.
+- Improve selinux support for tablespace.
+- Remove deprecation warnings.
+- Support changing PGDATA on RedHat.
+- Add SLES 11 support.
+
+####Bugfixes
+- Link pg_config binary into /usr/bin.
+- Fix fedora support by using systemd.
+- Initdb should create xlogdir if set.
+
+##2014-08-27 - Supported Release 3.4.3
+###Summary
+
+This release fixes Ubuntu 10.04 with Facter 2.2.
+
+####Features
+####Bugfixes
+- Use a regular expression to match the major OS version on Ubuntu.
+
+##2014-07-31 - Supported Release 3.4.2
+###Summary
+
+This release fixes recent Fedora versions.
+
+####Features
+####Bugfixes
+- Fix Fedora.
+
+##2014-07-15 - Supported Release 3.4.1
+###Summary
+
+This release merely updates metadata.json so the module can be uninstalled and
+upgraded via the puppet module command.
+
+##2014-04-14 - Supported Release 3.4.0
+###Summary
+
+This feature rolls up several important features, the biggest being PostGIS
+handling and allowing `port` to be set on postgresql::server in order to
+change the port that Postgres listens on.  We've added support for RHEL7
+and Ubuntu 14.04, as well as allowing you to manage the service via
+`service_ensure` finally.
+
+####Features
+- Added `perl_package_name` for installing bindings.
+- Added `service_ensure` for allowing control of services.
+- Added `postgis_version` and postgis class for installing postgis.
+- Added `port` for selecting the port Postgres runs on.
+- Add support for RHEL7 and Ubuntu 14.04.
+- Add `default_db` to postgresql::server::database.
+- Widen the selection of unquoted parameters in postgresql_conf{}
+- Require the service within postgresql::server::reload for RHEL7.
+- Add `inherit` to postgresql::server::role.
+
+####Bugfixes
+
 ##2014-03-04 - Supported Release 3.3.3
 ###Summary
 

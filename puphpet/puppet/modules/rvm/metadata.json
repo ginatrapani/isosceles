@@ -1,6 +1,6 @@
 {
   "name": "maestrodev-rvm",
-  "version": "1.7.1",
+  "version": "1.11.0",
   "author": "maestrodev & Brandon Turner <bt@brandonturner.net>",
   "summary": "A puppet module for installing and using RVM (Ruby Version Manager)",
   "license": "Modified BSD License",
@@ -114,6 +114,6 @@
     }
   ],
   "dependencies": [
-    {"name":"puppetlabs/stdlib","version_requirement":">=3.2.0"}
+    {"name":"puppetlabs/stdlib","version_requirement":">=4.2.0"}
   ]
 }

@@ -1,4 +1,6 @@
-class apache::mod::reqtimeout {
+class apache::mod::reqtimeout (
+  $timeouts = ['header=20-40,minrate=500', 'body=10,minrate=500']
+){
   ::apache::mod { 'reqtimeout': }
   # Template uses no variables
   file { 'reqtimeout.conf':
@@ -7,6 +9,6 @@ class apache::mod::reqtimeout {
     content => template('apache/mod/reqtimeout.conf.erb'),
     require => Exec["mkdir ${::apache::mod_dir}"],
     before  => File[$::apache::mod_dir],
-    notify  => Service['httpd'],
+    notify  => Class['apache::service'],
   }
 }

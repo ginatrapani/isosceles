@@ -9,7 +9,7 @@ class puphpet::supervisord {
     class { '::supervisord':
       install_pip => false,
       require     => [
-        Class['::my_fw::post'],
+        Class['puphpet::firewall::post'],
         Class['puphpet::python::pip'],
       ],
     }
