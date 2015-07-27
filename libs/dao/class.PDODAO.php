@@ -157,11 +157,11 @@ abstract class PDODAO {
             $config = Config::getInstance();
             $exception_details = 'Database error! ';
             if ($config->getValue('debug')) {
-                $exception_details .= '<br>ThinkUp could not execute the following query:<br> '.
-                str_replace(chr(10), "", $stmt->queryString) . '  <br>PDOException: '. $e->getMessage();
+                $exception_details .= 'Could not execute the following query: '.
+                str_replace(chr(10), "", $stmt->queryString) . '  PDOException: '. $e->getMessage();
             } else {
                 $exception_details .=
-                '<br>To see the technical details of what went wrong, set debug = true in ThinkUp\'s config file.';
+                'To see the technical details of what went wrong, set debug = true in the config file.';
             }
             throw new PDOException ($exception_details);
         }
