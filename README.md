@@ -82,6 +82,10 @@ Destroy virtual machine:
 
 Note:  This does not delete setup files or the contents of the default directory.
 
+If you ``vagrant destroy`` then ``vagrant up`` again and keep getting authentication failures, run:
+
+    $ rm puphpet/files/dot/ssh/id_rsa
+
 ### Modify
 
 This Vagrant virtual machine was built with [PuPHPet](http://puphpet.com). To modify it for your own purposes, drag and drop ``puphpet/config.yaml`` onto (http://puphpet.com) in your web browser to regenerate.
