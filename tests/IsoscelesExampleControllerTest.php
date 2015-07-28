@@ -189,6 +189,24 @@ class IsoscelesExampleControllerTest extends IsoscelesBasicUnitTestCase {
         $this->assertRegExp('/Testing exception handling/', $results);
         $this->assertRegExp('/<html/', $results);
 
+        $_GET['throwexception'] = 'pdo';
+        $router = new Router();
+        $controller = new IsoscelesExampleController(true);
+        $results = $controller->go();
+
+        $this->assertRegExp('/Database error! Could not execute the following query/', $results);
+        $this->assertRegExp('/<html/', $results);
+
+        //With debug off, the SQL query shouldn't get outputted
+        ini_set('error_log', '/tmp/php-error.log');
+        Config::getInstance()->setValue('debug', false);
+        $controller = new IsoscelesExampleController(true);
+        $results = $controller->go();
+
+        $this->assertRegExp('/Database error!/', $results);
+        $this->assertFalse(strpos('/Could not execute the following query/', $results));
+        $this->assertRegExp('/<html/', $results);
+
         // @TODO Support JSON and txt responses in the Router's 500 controller
         // $_GET['json'] = true;
         // $results = $controller->go();

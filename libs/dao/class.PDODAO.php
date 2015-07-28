@@ -160,9 +160,10 @@ abstract class PDODAO {
                 $exception_details .= 'Could not execute the following query: '.
                 str_replace(chr(10), "", $stmt->queryString) . '  PDOException: '. $e->getMessage();
             } else {
-                $exception_details .= 'Database error!';
-                error_log('Could not execute the following query: '.
-                    str_replace(chr(10), "", $stmt->queryString) . '  PDOException: '. $e->getMessage());
+                error_log('Could not execute the following query:
+'.
+                    self::mergeSQLVars($stmt->queryString, $binds) . '
+PDOException: '. $e->getMessage());
             }
             throw new PDOException ($exception_details);
         }

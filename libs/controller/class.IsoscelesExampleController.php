@@ -46,7 +46,12 @@ class IsoscelesExampleController extends Controller {
 
         //Demonstrate exceptions
         if (isset($_GET['throwexception'])) {
-            throw new Exception("Testing exception handling!");
+            if ($_GET['throwexception'] == 'pdo') {
+                $test_dao = new TestMySQLDAO();
+                $test_dao->badBinds();
+            } else {
+                throw new Exception("Testing exception handling!");
+            }
         } else if (!isset($_GET['json']) && !isset($_GET['css'])) {
             $this->setViewTemplate('isosceles-example-controller.tpl');
         }
