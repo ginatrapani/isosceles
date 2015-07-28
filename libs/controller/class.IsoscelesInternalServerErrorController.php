@@ -15,17 +15,18 @@
  * You should have received a copy of the GNU General Public License along with ThinkUp.  If not, see
  * <http://www.gnu.org/licenses/>.
  *
- * Isosceles Page Not Found (404) Controller
+ * Isosceles Internal Server Error (500) Controller
  *
  * @license http://www.gnu.org/licenses/gpl.html
  */
 
-class IsoscelesPageNotFoundController extends Controller {
+// @TODO Support JSON and txt responses, not just HTML
+class IsoscelesInternalServerErrorController extends Controller {
     public function control() {
-        $this->setViewTemplate('isosceles-page-not-found-controller.tpl');
+        $this->setViewTemplate('isosceles.500.tpl');
         if (isset($_SERVER["SERVER_PROTOCOL"])) {
-            header($_SERVER["SERVER_PROTOCOL"]." 404 Not Found", true, 400);
+            header($_SERVER['SERVER_PROTOCOL'] . ' 500 Internal Server Error', true, 500);
         }
-       return $this->generateView();
+        return $this->generateView();
     }
 }

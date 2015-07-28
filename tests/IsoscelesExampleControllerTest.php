@@ -149,7 +149,7 @@ class IsoscelesExampleControllerTest extends IsoscelesBasicUnitTestCase {
     /**
      * Test exception handling
      */
-    public function testExceptionHandling() {
+    public function testExceptionHandlingNoRouter() {
         $_GET['throwexception'] = 'yesindeedy';
         $controller = new IsoscelesExampleController(true);
         $results = $controller->go();
@@ -175,5 +175,37 @@ class IsoscelesExampleControllerTest extends IsoscelesBasicUnitTestCase {
         $this->assertRegExp('/Testing exception handling/', $results);
         $this->assertEquals('Exception', $v_mgr->getTemplateDataItem('error_type'));
         unset($_GET['text']);
+    }
+
+    /**
+     * Test exception handling with Router 500 controller
+     */
+    public function testExceptionHandlingWithRouter() {
+        $_GET['throwexception'] = 'yesindeedy';
+        $router = new Router();
+        $controller = new IsoscelesExampleController(true);
+        $results = $controller->go();
+
+        $this->assertRegExp('/Testing exception handling/', $results);
+        $this->assertRegExp('/<html/', $results);
+
+        // @TODO Support JSON and txt responses in the Router's 500 controller
+        // $_GET['json'] = true;
+        // $results = $controller->go();
+        // $this->debug($results);
+        // $this->assertFalse(strpos($results, '<html'));
+        // $this->assertRegExp('/{/', $results);
+        // $this->assertRegExp('/Testing exception handling/', $results);
+        // $this->assertEquals('Exception', $v_mgr->getTemplateDataItem('error_type'));
+        // unset($_GET['json']);
+
+        // $_GET['text'] = true;
+        // $results = $controller->go();
+        // $this->assertFalse(strpos($results, '<html'));
+        // $this->assertFalse(strpos($results, '{'));
+        // $this->assertRegExp('/Testing exception handling/', $results);
+        // $this->assertEquals('Exception', $v_mgr->getTemplateDataItem('error_type'));
+        // unset($_GET['text']);
+        // $router = null;
     }
 }

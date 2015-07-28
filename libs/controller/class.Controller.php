@@ -349,29 +349,38 @@ abstract class Controller {
                 return $results;
             }
         } catch (Exception $e) {
-            //Explicitly set TZ (before we have user's choice) to avoid date() warning about using system settings
-            Utils::setDefaultTimezonePHPini();
-            $content_type = $this->content_type;
-            if (strpos($content_type, ';') !== false) {
-                $exploded = explode(';', $content_type);
-                $content_type = array_shift($exploded);
-            }
-            switch ($content_type) {
-                case 'application/json':
-                    $this->setViewTemplate('isosceles.500.json.tpl');
-                    break;
-                case 'text/plain':
-                    $this->setViewTemplate('isosceles.500.txt.tpl');
-                    break;
-                default:
-                    $this->setViewTemplate('isosceles.500.tpl');
-            }
-            $this->addToView('error_type', get_class($e));
-            $this->addErrorMessage($e->getMessage());
+            // Send HTTP 500 Internal Server Error header
             if (isset($_SERVER["SERVER_PROTOCOL"])) {
                 header($_SERVER['SERVER_PROTOCOL'] . ' 500 Internal Server Error', true, 500);
             }
-            return $this->generateView();
+
+            //If Router has been instantiated and can handle 500 errors, use that (recommended)
+            if (isset(Router::$routes['500'])) {
+                $controller = new Router::$routes['500'](true);
+                $controller->addErrorMessage($e->getMessage());
+                return $controller->go();
+            } else {
+               //Explicitly set TZ (before we have user's choice) to avoid date() warning about using system settings
+                Utils::setDefaultTimezonePHPini();
+                $content_type = $this->content_type;
+                if (strpos($content_type, ';') !== false) {
+                    $exploded = explode(';', $content_type);
+                    $content_type = array_shift($exploded);
+                }
+                switch ($content_type) {
+                    case 'application/json':
+                        $this->setViewTemplate('isosceles.500.json.tpl');
+                        break;
+                    case 'text/plain':
+                        $this->setViewTemplate('isosceles.500.txt.tpl');
+                        break;
+                    default:
+                        $this->setViewTemplate('isosceles.500.tpl');
+                }
+                $this->addToView('error_type', get_class($e));
+                $this->addErrorMessage($e->getMessage());
+                return $this->generateView();
+            }
         }
     }
 

@@ -34,10 +34,15 @@ class Router {
     /**
      * Constructor with optionally-defined 404 controller.
      * @param string $not_found Name of 404 controller.
+     * @param string $internal_server_error Name of 500 controller.
      */
-    public function __construct($not_found = 'IsoscelesPageNotFoundController') {
+    public function __construct($not_found = 'IsoscelesPageNotFoundController',
+        $internal_server_error = 'IsoscelesInternalServerErrorController') {
         if (!isset(self::$routes['404'])) {
             $this->addRoute('404', $not_found);
+        }
+        if (!isset(self::$routes['500'])) {
+            $this->addRoute('500', $internal_server_error);
         }
     }
     /**
@@ -64,9 +69,6 @@ class Router {
             }
             $controller = new self::$routes[$slug]($session_started);
         } else {
-            if (isset($_SERVER["SERVER_PROTOCOL"])) {
-                header($_SERVER["SERVER_PROTOCOL"]." 404 Not Found");
-            }
             $controller = new self::$routes['404']($session_started);
         }
         return $controller->go();

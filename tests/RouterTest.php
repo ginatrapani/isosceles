@@ -40,14 +40,16 @@ class RouterTest extends IsoscelesBasicUnitTestCase {
     public function testAddRoute() {
         $router = new Router();
         $router->addRoute('test', 'IsoscelesExampleController');
-        $this->assertEquals(array('test'=>'IsoscelesExampleController', 404 => 'IsoscelesPageNotFoundController'),
+        $this->assertEquals(array('test'=>'IsoscelesExampleController', 404 => 'IsoscelesPageNotFoundController',
+            500 => 'IsoscelesInternalServerErrorController'),
             Router::$routes);
-        $this->assertEquals(2, sizeof(Router::$routes));
+        $this->assertEquals(3, sizeof(Router::$routes));
 
         $router->addRoute('test2', 'Test2Controller');
         $this->assertEquals(array('test'=>'IsoscelesExampleController', 'test2'=>'Test2Controller',
-            404 => 'IsoscelesPageNotFoundController'), Router::$routes);
-        $this->assertEquals(3, sizeof(Router::$routes));
+            404 => 'IsoscelesPageNotFoundController', 500 => 'IsoscelesInternalServerErrorController'),
+            Router::$routes);
+        $this->assertEquals(4, sizeof(Router::$routes));
     }
 
     public function testRouteNoParameters() {
