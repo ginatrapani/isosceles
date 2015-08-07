@@ -208,12 +208,14 @@ abstract class Controller {
 
     /**
      * Prepares the JSON data in $this->json_data and adds it to the current view under the key "json".
+     * To change the parameters, the child controller can override this function, and call the parent with
+     * different defaults
      *
      * @param bool $indent Whether or not to indent the JSON string. Defaults to true.
      * @param bool $stripslashes Whether or not to strip escaped slashes. Default to true.
      * @param bool $convert_numeric_strings Whether or not to convert numeric strings to numbers. Defaults to true.
      */
-    private function prepareJSON($indent = true, $stripslashes = true, $convert_numeric_strings = true) {
+    protected function prepareJSON($indent = true, $stripslashes = true, $convert_numeric_strings = true) {
         if (isset($this->json_data)) {
             $json = json_encode($this->json_data);
             if ($stripslashes) {
