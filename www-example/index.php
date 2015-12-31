@@ -6,6 +6,7 @@ $router = new Router();
 $router->addRoute('example', 'IsoscelesExampleController', array('network', 'username'));
 $router->addRoute('index', 'IsoscelesExampleController');
 $router->addRoute('private', 'IsoscelesExampleAuthController');
+$router->addRoute('json', 'IsoscelesExampleJSONController');
 $router->addRoute('signin', 'IsoscelesSignInController');
 $router->addRoute('signout', 'IsoscelesSignOutController');
 
