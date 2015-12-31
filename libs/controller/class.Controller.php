@@ -140,6 +140,10 @@ abstract class Controller {
      * @return str view markup
      */
     protected function generateView() {
+        if (!isset($this->view_template)) {
+            throw new Exception(get_class($this).': No view template specified');
+        }
+
         // add header javascript if defined
         if ( count($this->header_scripts) > 0) {
             $this->addToView('header_scripts', $this->header_scripts);
@@ -157,52 +161,37 @@ abstract class Controller {
         }
 
         $this->sendHeader();
-        if (isset($this->view_template)) {
-            if ($this->view_mgr->isViewCached()) {
-                $cache_key = $this->getCacheKeyString();
-                if ($this->profiler_enabled && !isset($this->json_data) &&
-                strpos($this->content_type, 'text/javascript') === false) {
-                    $view_start_time = microtime(true);
-                    $cache_source = $this->shouldRefreshCache()?"DATABASE":"FILE";
-                    $results = $this->view_mgr->fetch($this->view_template, $cache_key);
-                    $view_end_time = microtime(true);
-                    $total_time = $view_end_time - $view_start_time;
-                    $profiler = Profiler::getInstance();
-                    $profiler->add($total_time, "Rendered view from ". $cache_source . ", cache key: <i>".
-                    $this->getCacheKeyString(), false).'</i>';
-                    return $results;
-                } else {
-                    return $this->view_mgr->fetch($this->view_template, $cache_key);
-                }
+        if ($this->view_mgr->isViewCached()) {
+            $cache_key = $this->getCacheKeyString();
+            if ($this->profiler_enabled && strpos($this->content_type, 'text/javascript') === false) {
+                $view_start_time = microtime(true);
+                $cache_source = $this->shouldRefreshCache()?"DATABASE":"FILE";
+                $this->prepareJSON(); //For JSON responses
+                $results = $this->view_mgr->fetch($this->view_template, $cache_key);
+                $view_end_time = microtime(true);
+                $total_time = $view_end_time - $view_start_time;
+                $profiler = Profiler::getInstance();
+                $profiler->add($total_time, "Rendered view from ". $cache_source . ", cache key: ".
+                    $this->getCacheKeyString(), false);
+                return $results;
             } else {
-                if ($this->profiler_enabled && !isset($this->json_data) &&
-                strpos($this->content_type, 'text/javascript') === false) {
-                    $view_start_time = microtime(true);
-                    $results = $this->view_mgr->fetch($this->view_template);
-                    $view_end_time = microtime(true);
-                    $total_time = $view_end_time - $view_start_time;
-                    $profiler = Profiler::getInstance();
-                    $profiler->add($total_time, "Rendered view (not cached)", false);
-                    return $results;
-                } else  {
-                    return $this->view_mgr->fetch($this->view_template);
-                }
-            }
-        } else if (isset($this->json_data) ) {
-            $this->setContentType('application/json');
-            if ($this->view_mgr->isViewCached()) {
-                if ($this->view_mgr->isCached('isosceles.json.tpl', $this->getCacheKeyString())) {
-                    return $this->view_mgr->fetch('isosceles.json.tpl', $this->getCacheKeyString());
-                } else {
-                    $this->prepareJSON();
-                    return $this->view_mgr->fetch('isosceles.json.tpl', $this->getCacheKeyString());
-                }
-            } else {
-                $this->prepareJSON();
-                return $this->view_mgr->fetch('isosceles.json.tpl');
+                $this->prepareJSON(); //For JSON responses
+                return $this->view_mgr->fetch($this->view_template, $cache_key);
             }
         } else {
-            throw new Exception(get_class($this).': No view template specified');
+            if ($this->profiler_enabled && strpos($this->content_type, 'text/javascript') === false) {
+                $view_start_time = microtime(true);
+                $this->prepareJSON(); //For JSON responses
+                $results = $this->view_mgr->fetch($this->view_template);
+                $view_end_time = microtime(true);
+                $total_time = $view_end_time - $view_start_time;
+                $profiler = Profiler::getInstance();
+                $profiler->add($total_time, "Rendered view (not cached)", false);
+                return $results;
+            } else  {
+                $this->prepareJSON(); //For JSON responses
+                return $this->view_mgr->fetch($this->view_template);
+            }
         }
     }
 
@@ -252,16 +241,22 @@ abstract class Controller {
     }
 
     /**
-     * Sets json data structure to output a json string, and sets Content-Type to appplication/json
+     * Sets json data structure.
      *
      * @param array json data
+     * @return void
      */
     protected function setJsonData($data) {
-        if ($data != null) {
-            $this->setContentType('application/json');
-        }
-
         $this->json_data = $data;
+    }
+
+    /**
+     * Prepare the view template and content type for JSON responses.
+     * @return void
+     */
+    protected function setUpJsonResponse() {
+        $this->setContentType('application/json');
+        $this->setViewTemplate('isosceles.json.tpl');
     }
 
     /**
@@ -332,19 +327,20 @@ abstract class Controller {
         try {
             $this->initalizeApp();
 
-            // are we in need of a database migration?
             $classname = get_class($this);
             $results = $this->control();
-            if ($this->profiler_enabled && !isset($this->json_data)
-            && strpos($this->content_type, 'text/javascript') === false
-            && strpos($this->content_type, 'text/csv') === false) {
+            if ($this->profiler_enabled
+                && strpos($this->content_type, 'text/javascript') === false
+                && strpos($this->content_type, 'text/csv') === false) {
                 $end_time = microtime(true);
                 $total_time = $end_time - $this->start_time;
                 $profiler = Profiler::getInstance();
                 $this->disableCaching();
                 $profiler->add($total_time,
                     "total page execution time, running ".$profiler->total_queries." queries.");
-                $this->setViewTemplate('_isosceles.profiler.tpl');
+                $this->setViewTemplate('_isosceles.profiler.'
+                        .((strpos($this->content_type, 'application/json')!== false)?'json.':'') // For JSON responses
+                        .'tpl');
                 $this->addToView('profile_items',$profiler->getProfile());
                 return  $results . $this->generateView();
             } else  {

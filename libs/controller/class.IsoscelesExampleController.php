@@ -33,6 +33,7 @@ class IsoscelesExampleController extends Controller {
 
         //Demonstrate content types
         if (isset($_GET['json'])) {
+            $this->setUpJsonResponse();
             $this->setJsonData( array( 'aname' => 'a value', 'alist' => array('apple', 'pear', 'banana'), 'alink' =>
             'http://isosceleskit.org'));
         } else if (isset($_GET['text'])) {

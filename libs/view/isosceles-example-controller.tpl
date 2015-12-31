@@ -24,6 +24,15 @@
     <li>{$custom_config_2}</li>
 </ul>
 
-<h3>Smarty modifier test - URL encoding</h3>
+<h3>JSON examples</h3>
+<ul>
+    <li><a href="/?json=true">Non-cached JSON</a></li>
+    <li><a href="/json/">JSON with caching enabled</a> (In config.inc.php, set cache_pages to true)</li>
+</ul>
+<p>Hint: In config.inc.php, set enable_profiler to true to see page rendering stats)</p>
+
+<h2>Smarty modifier test - URL encoding</h2>
 <p>{'this should be URL encoded'|escape:'url'}
+
 {include file="_isosceles.footer.tpl"}
+
