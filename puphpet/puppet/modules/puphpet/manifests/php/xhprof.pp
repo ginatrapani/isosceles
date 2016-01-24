@@ -15,7 +15,7 @@ class puphpet::php::xhprof (
   }
   -> file { "${webroot_location}/xhprof/xhprof_html":
     ensure  => directory,
-    mode    => 0775,
+    mode    => '0775',
   }
   -> exec { 'configure xhprof':
     cwd     => "${webroot_location}/xhprof/extension",

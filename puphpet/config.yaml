@@ -7,33 +7,34 @@ vagrantfile:
         memory: '512'
         cpus: '1'
         chosen_provider: virtualbox
+        box_version: ''
         network:
             private_network: 192.168.56.101
             forwarded_port:
-                vflnp_ru5y6y5ybb1b:
+                vflnp_v87rr0v8zkx8:
                     host: '8916'
                     guest: '22'
         post_up_message: ''
         provider:
             virtualbox:
                 modifyvm:
-                    natdnshostresolver1: 'on'
+                    natdnshostresolver1: false
                 showgui: '0'
             vmware:
                 numvcpus: 1
             parallels:
-                cpus: 1
+                use_linked_clone: '0'
+                check_guest_tools: '0'
+                update_guest_tools: '0'
         provision:
             puppet:
-                manifests_path: puphpet/puppet
-                manifest_file: site.pp
+                manifests_path: puphpet/puppet/manifests
                 module_path: puphpet/puppet/modules
                 options:
                     - '--verbose'
                     - '--hiera_config /vagrant/puphpet/puppet/hiera.yaml'
-                    - '--parser future'
         synced_folder:
-            vflsf_cfz58or0zys4:
+            vflsf_1j14k0inbioj:
                 source: ./
                 target: /var/www
                 sync_type: default
@@ -41,6 +42,9 @@ vagrantfile:
                     smb_host: ''
                     smb_username: ''
                     smb_password: ''
+                    mount_options:
+                        dir_mode: '0775'
+                        file_mode: '0664'
                 rsync:
                     args:
                         - '--verbose'
@@ -65,8 +69,15 @@ vagrantfile:
         forward_agent: false
         forward_x11: false
         shell: 'bash -l'
+        insert_key: false
     vagrant:
         host: detect
+    proxy:
+        http: ''
+        https: ''
+        ftp: ''
+        no_proxy: ''
+        enabled: ''
 server:
     install: '1'
     packages:
@@ -80,9 +91,8 @@ locale:
     install: '1'
     settings:
         default_locale: ''
-        locales:
-            - 'en_GB.UTF-8 UTF-8'
-            - 'en_US.UTF-8 UTF-8'
+        locales: {  }
+        timezone: UTC
 firewall:
     install: '1'
     rules: {  }
@@ -95,9 +105,13 @@ nginx:
         default_vhost: 1
         proxy_buffer_size: 128k
         proxy_buffers: '4 256k'
+        proxy_connect_timeout: 600s
+        proxy_send_timeout: 600s
+        proxy_read_timeout: 600s
+        names_hash_bucket_size: 128
     upstreams: {  }
     vhosts:
-        nxv_zp9kemga9v6g:
+        nxv_xmsfwtmmwa19:
             server_name: isosceles.dev
             server_aliases:
                 - www.isosceles.dev
@@ -118,6 +132,7 @@ nginx:
 apache:
     install: '1'
     settings:
+        version: 2.4
         user: www-data
         group: www-data
         default_vhost: true
@@ -128,7 +143,7 @@ apache:
         - proxy_fcgi
         - rewrite
     vhosts:
-        av_fmhqqm6ldxql:
+        av_zvezefqbe7wb:
             servername: isosceles.dev
             serveraliases:
                 - www.isosceles.dev
@@ -145,7 +160,7 @@ apache:
             ssl_protocol: ''
             ssl_cipher: ''
             directories:
-                avd_wm828ubc4nz3:
+                avd_2turl7zj6m0h:
                     path: /var/www/www-example
                     options:
                         - Indexes
@@ -157,7 +172,7 @@ apache:
                         - 'all granted'
                     custom_fragment: ''
                     files_match:
-                        avdfm_thtmgs6xj67s:
+                        avdfm_sphbe5n0p88n:
                             path: \.php$
                             sethandler: 'proxy:fcgi://127.0.0.1:9000'
                             custom_fragment: ''
@@ -169,16 +184,10 @@ php:
         version: '56'
     modules:
         php:
-            - cli
             - curl
-            - gd
-            - imagick
             - intl
-            - mcrypt
         pear: {  }
-        pecl:
-            - PDO_MYSQL
-            - pecl_http
+        pecl: {  }
     ini:
         display_errors: 'On'
         error_reporting: E_ALL
@@ -186,7 +195,7 @@ php:
     fpm_ini:
         error_log: /var/log/php-fpm.log
     fpm_pools:
-        phpfp_1whbnvacpqsy:
+        phpfp_lv7wcd5j423l:
             ini:
                 listen: '127.0.0.1:9000'
                 security.limit_extensions: .php
@@ -229,16 +238,18 @@ drush:
 ruby:
     install: '1'
     versions:
-        rv_jrwr0txy05m1:
+        rv_2qm0ukipcao0:
             version: ''
 python:
     install: '1'
     packages: {  }
     versions:
-        pyenv_1wvvihp6fl7l:
-            version: 2.6.9
+        pyenv_fwkjcy7y5c5c:
+            version: ''
 nodejs:
     install: '0'
+    settings:
+        version: null
     npm_packages: {  }
 hhvm:
     install: '0'
@@ -248,38 +259,6 @@ hhvm:
     settings: {  }
     server_ini: {  }
     php_ini: {  }
-mysql:
-    install: '1'
-    settings:
-        version: '5.6'
-        root_password: nice2bnice
-        override_options: {  }
-    adminer: '1'
-    users:
-        mysqlnu_b4losixhd0wu:
-            name: isosceles_web
-            password: nice2bnice
-        mysqlnu_h233vl149ap6:
-            name: isosceles_tests
-            password: nice2bnice
-    databases:
-        mysqlnd_56grg90r4m0c:
-            name: isosceles_web
-            sql: ''
-        mysqlnd_78nhi4w9lnvn:
-            name: isosceles_tests
-            sql: ''
-    grants:
-        mysqlng_uqwk544edprp:
-            user: isosceles_web
-            table: '*.*'
-            privileges:
-                - ALL
-        mysqlng_r9txh5hao51i:
-            user: isosceles_tests
-            table: '*.*'
-            privileges:
-                - ALL
 mariadb:
     install: '0'
     settings:
@@ -290,6 +269,38 @@ mariadb:
     users: {  }
     databases: {  }
     grants: {  }
+mysql:
+    install: '1'
+    settings:
+        version: '5.6'
+        root_password: nice2bnice
+        override_options: {  }
+    adminer: '1'
+    users:
+        mysqlnu_6efdjlpoo19l:
+            name: isosceles_web
+            password: nice2bnice
+        mysqlnu_ndukhgw8g567:
+            name: isosceles_tests
+            password: nice2bnice
+    databases:
+        mysqlnd_z23s2dylfugz:
+            name: isosceles_web
+            sql: ''
+        mysqlnd_l8ylhahshuy3:
+            name: isosceles_tests
+            sql: ''
+    grants:
+        mysqlng_jkn4o2dsy8ty:
+            user: isosceles_web
+            table: '*.*'
+            privileges:
+                - ALL
+        mysqlng_0yik2cvw39ka:
+            user: isosceles_tests
+            table: '*.*'
+            privileges:
+                - ALL
 postgresql:
     install: '0'
     settings:
@@ -308,24 +319,25 @@ mongodb:
         auth: 1
         bind_ip: 127.0.0.1
         port: '27017'
+    globals:
+        version: 2.6.0
     databases: {  }
 redis:
     install: '0'
     settings:
-        conf_port: '6379'
+        port: '6379'
 sqlite:
     install: '0'
     adminer: 0
     databases: {  }
-mailcatcher:
-    install: '1'
+mailhog:
+    install: '0'
     settings:
         smtp_ip: 0.0.0.0
         smtp_port: 1025
         http_ip: 0.0.0.0
-        http_port: '1080'
-        mailcatcher_path: /usr/local/rvm/wrappers/default
-        from_email_method: inline
+        http_port: '8025'
+        path: /usr/local/bin/mailhog
 beanstalkd:
     install: '0'
     settings:
@@ -349,6 +361,7 @@ elastic_search:
     settings:
         version: 1.4.1
         java_install: true
+    instances: {  }
 solr:
     install: '0'
     settings:

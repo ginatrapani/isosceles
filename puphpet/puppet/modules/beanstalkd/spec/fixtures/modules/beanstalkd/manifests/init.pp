@@ -40,7 +40,7 @@ define beanstalkd::config ( # name
       $configtemplate     = "${module_name}/debian/beanstalkd.erb"
       $hasstatus          = 'true'
       $restart            = '/etc/init.d/beanstalkd restart'
-      $mode               = 0755
+      $mode               = '0755'
     }
     centos, redhat: {
       $defaultpackagename = 'beanstalkd'
@@ -50,7 +50,7 @@ define beanstalkd::config ( # name
       $configtemplate     = "${module_name}/redhat/beanstalkd_sysconfig.erb"
       $hasstatus          = 'true'
       $restart            = '/etc/init.d/beanstalkd restart'
-      $mode               = 0644
+      $mode               = '0644'
     }
     # TODO: add more OS support!
     default: {
