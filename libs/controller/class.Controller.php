@@ -140,6 +140,10 @@ abstract class Controller {
      * @return str view markup
      */
     protected function generateView() {
+        if (!isset($this->view_template)) {
+            throw new Exception(get_class($this).': No view template specified');
+        }
+
         // add header javascript if defined
         if ( count($this->header_scripts) > 0) {
             $this->addToView('header_scripts', $this->header_scripts);
@@ -192,12 +196,16 @@ abstract class Controller {
                 $cache_key = $this->getCacheKeyString();
                 if ($this->profiler_enabled) {
                     echo "PROFILER IS ENABLED ";
+                    $view_start_time = microtime(true);
+                    $cache_source = $this->shouldRefreshCache()?"DATABASE":"FILE";
+                    $results = $this->view_mgr->fetch($this->view_template, $cache_key);
+                    $view_end_time = microtime(true);
+                    $total_time = $view_end_time - $view_start_time;
                     $profiler = Profiler::getInstance();
-                    $profiler_items = $profiler->getProfile();
-                    $this->json_data['isosceles_profiler'] = $profiler_items;
-                    $this->prepareJSON();
+                    $profiler->add($total_time, "Rendered view from ". $cache_source . ", cache key: <i>".
+                        $this->getCacheKeyString(), false).'</i>';
                 }
-                return $this->view_mgr->fetch('isosceles.json.tpl', $cache_key);
+                return $results;
             } else {
                 echo "CACHING IS OFF ";
                 if ($this->profiler_enabled) {
@@ -343,9 +351,8 @@ abstract class Controller {
             // are we in need of a database migration?
             $classname = get_class($this);
             $results = $this->control();
-            if ($this->profiler_enabled && !isset($this->json_data)
-            && strpos($this->content_type, 'text/javascript') === false
-            && strpos($this->content_type, 'text/csv') === false) {
+            if ($this->profiler_enabled && strpos($this->content_type, 'text/javascript') === false
+                && strpos($this->content_type, 'text/csv') === false) {
                 $end_time = microtime(true);
                 $total_time = $end_time - $this->start_time;
                 $profiler = Profiler::getInstance();
