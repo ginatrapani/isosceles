@@ -29,7 +29,7 @@
     <li><a href="/?json=true">Non-cached JSON</a></li>
     <li><a href="/json/">JSON with caching enabled</a> (In config.inc.php, set cache_pages to true)</li>
 </ul>
-<p>Hint: In config.inc.php, set enable_profiler to true to see page rendering stats)</p>
+<p>Hint: In config.inc.php, set enable_profiler to true to see page rendering stats.</p>
 
 <h2>Smarty modifier test - URL encoding</h2>
 <p>{'this should be URL encoded'|escape:'url'}
